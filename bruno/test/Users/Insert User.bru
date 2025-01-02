@@ -1,0 +1,21 @@
+meta {
+  name: Insert User
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:5000/api/users
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "lastName": "Doe",
+      "firstName": "John",
+      "password": "Motdepasse123?",
+      "mail": "john.doe@example.com"
+  }
+  
+}

@@ -1,0 +1,23 @@
+meta {
+  name: Insert Response to Poll
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:5000/api/responses
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "poll_id": "673af38039f534f08178b235",
+    "choice_id": "673af38039f534f08178b232",
+    "user_id": "6738e47b669ff07ba6183f4a"
+  }
+}

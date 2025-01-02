@@ -1,0 +1,33 @@
+meta {
+  name: Insert Poll
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:5000/api/polls
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "titre": "Quel est votre langage préféré ?",
+    "description": "Votez pour votre langage de programmation favori.",
+    "choices": [
+      {
+        "choice_text": "Python"
+      },
+      {
+        "choice_text": "JavaScript"
+      },
+      {
+        "choice_text": "C++"
+      }
+    ]
+  }
+}

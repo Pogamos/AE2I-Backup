@@ -1,0 +1,22 @@
+meta {
+  name: Update User
+  type: http
+  seq: 4
+}
+
+put {
+  url: http://localhost:5000/api/users/6738e2b2669ff07ba6183f49
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+      "lastName": "Brolly"
+  }
+  
+}
