@@ -32,8 +32,7 @@ function Events() {
       .then((data) => {
         console.log("Success:", data);
 
-        const validEvents = data
-        .map((element) => element);
+        const validEvents = data.map((element) => element);
 
         console.log(validEvents);
         setEvents((prevEvents) => {
@@ -98,8 +97,7 @@ function Events() {
       .then((data) => {
         console.log("Success:", data);
 
-        const validPolls = data
-        .map((element) => element);
+        const validPolls = data.map((element) => element);
 
         console.log(validPolls);
         setPolls((prevPolls) => {
@@ -114,7 +112,7 @@ function Events() {
   };
 
   const recupPost = () => {
-    fetch("http://localhost:5000/api/posts", {
+    fetch("http://localhost:5000/api/posts/", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -127,16 +125,16 @@ function Events() {
         return response.json();
       })
       .then((data) => {
-        console.log("Success:", data);
-  
-        const validSlides = data
+        console.log("Success:", data.posts);
+
+        const validSlides = data.posts
           .filter((element) => !element.deleted_at)
           .map((element) => element.link);
-        
+
         console.log(validSlides);
         setSlides((prevSlides) => {
           const combinedSlides = [...prevSlides, ...validSlides];
-  
+
           return combinedSlides.slice(-6);
         });
       })
@@ -156,10 +154,12 @@ function Events() {
       link: url,
     };
 
-    fetch("http://localhost:5000/api/posts", {
+    fetch("http://localhost:5000/api/posts/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNTkxODU2OCwianRpIjoiOWQ1NDg0ZTctZWZmNC00NGZmLThhY2YtM2ZkYWYzOWQyM2ZkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjY3NzdlNTI4MTA3MDNjNmY1NDIwYmIwMSIsIm5iZiI6MTczNTkxODU2OCwiZXhwIjoxNzM1OTE5NDY4LCJyb2xlIjoiYWRtaW4ifQ.RbhlIGrhnfGg4C0ytLzgPB4AEMk5YDLDNJ5NO3xzOP4",
       },
       body: JSON.stringify(post),
     })
@@ -194,7 +194,9 @@ function Events() {
       <div key={index} className="card-secondary">
         <img src="../svg/poll.svg" className="card-secondary-img" alt="..." />
         <div className="card-body">
-          <p className="card-secondary-text">Le sondage "{element.title}" - expire dans {element.description}</p>
+          <p className="card-secondary-text">
+            Le sondage "{element.title}" - expire dans {element.description}
+          </p>
         </div>
       </div>
     ));
@@ -214,7 +216,7 @@ function Events() {
   };
 
   const posts = () => {
-    console.log("slides",slides);
+    console.log("slides", slides);
     return slides.map((element, index) => (
       <div
         key={index}

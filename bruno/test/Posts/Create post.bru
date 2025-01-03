@@ -1,0 +1,23 @@
+meta {
+  name: Create post
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:5000/api/posts
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNTkxMDcxOCwianRpIjoiZTVhOTI3YmItM2RkNi00MmYzLWJkODItOWRlMzA1OWVjYTAwIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjY3NzdlNTI4MTA3MDNjNmY1NDIwYmIwMSIsIm5iZiI6MTczNTkxMDcxOCwiZXhwIjoxNzM1OTExNjE4LCJyb2xlIjoiYWRtaW4ifQ.r41yrh8VkZkFjxbNKt4W2t2GwyCYZA2nejLxXAZIoTs
+}
+
+body:json {
+  {
+        "title": "title",
+        "description": "description",
+        "link": "https://www.instagram.com/p/DD2gPhNsbXs/"
+  }
+}

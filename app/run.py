@@ -438,10 +438,8 @@
 
 from app import create_app, create_logger
 from flask import request, current_app
-from flask_cors import CORS
 
 app = create_app()
-CORS(app, origins=["http://localhost:3000"])
 
 logger = create_logger()
 app.logger = logger
