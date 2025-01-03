@@ -1,0 +1,92 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.container {
+  background-color: #070b23;
+  height: calc(100vh - 40px);
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  padding-left: 0px;
+  margin-left: 100px;
+  /* overflow-y: auto; */
+}
+/* classique shit */
+.content {
+  background-color: #d9d9d9;
+  border-radius: 10px;
+  padding: 15px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* ---------SCROLLBAR------------------------------------------------ */
+/* Pour les navigateurs basés sur Webkit (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 100, 100, 0.5);
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/* ::-webkit-scrollbar {
+  display: none;
+} 
+*/
+
+.scrollable:hover::-webkit-scrollbar {
+  display: block; /* Affiche la scrollbar uniquement au survol */
+}
+
+/* Pour Firefox */
+.scrollable {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(100, 100, 100, 0.5) transparent;
+}
+
+.scrollable:hover {
+  scrollbar-color: rgba(100, 100, 100, 0.7) transparent; /* Renforce la couleur au survol */
+}
