@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from ..models.polls import Poll, PollSchema, Response, ResponseSchema
-from ..utils.tools import check_admin_permission, check_user_permission
+from ..utils.tools import check_admin_permission, check_basic_permission
 
 bp = Blueprint('polls', __name__)
 poll_schema = PollSchema()
