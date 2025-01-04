@@ -68,7 +68,6 @@ class User(BaseModel):
     def find_by_email(cls, email):
         """Recherche un utilisateur par son email."""
         user = cls.collection.find_one({"email": email})
-        print(user)
         return cls.to_json(user) if user else None
     
     # Return User object
