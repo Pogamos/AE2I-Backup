@@ -1,11 +1,22 @@
-from flask import Blueprint, jsonify, request, current_app
+from flask import Blueprint, jsonify, request, current_app, send_from_directory
 from flask_jwt_extended import jwt_required
 from ..models.events import Event, EventSchema
 from datetime import datetime
 from ..utils.tools import check_admin_permission
+from werkzeug.utils import secure_filename
+import os
 
 bp = Blueprint('events', __name__)
 event_schema = EventSchema()
+
+# Configuration
+UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), '../../frontend/public/uploads')
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+# GET EVENT IMAGE
+@bp.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(UPLOAD_FOLDER, filename)
 
 # CREATE EVENT
 @bp.route("/", methods=["POST"])
@@ -14,9 +25,32 @@ def create_event():
     if not check_admin_permission():
         return jsonify({"success": False, "message": "Permission denied"}), 403
     try:
-        data = event_schema.load(request.get_json())
-        data['date'] = datetime.strptime(data['date'], '%Y-%m-%dT%H:%M:%S')
-        event = Event(**data)
+        title = request.form.get("title")
+        description = request.form.get("description")
+        date_str = request.form.get("date")
+        if not (title and description and date_str):
+            return jsonify({"success": False, "message": "Missing fields"}), 400
+        
+        try:
+            date = datetime.strptime(date_str, '%Y-%m-%dT%H:%M:%S')
+        except ValueError:
+            return jsonify({"success": False, "message": "Invalid date format"}), 400
+
+        image_file = request.files.get("image")
+        if not image_file:
+            return jsonify({"success": False, "message": "Image is required"}), 400
+
+        filename = title.replace(" ", "_") + "." + request.form.get("image_ext")
+        image_path = os.path.join(UPLOAD_FOLDER, filename)
+        image_file.save(image_path)
+        
+        event_data = {
+            "title": title,
+            "description": description,
+            "date": date,
+        }
+        
+        event = Event(**event_data)
         event.save()
         current_app.logger.info(f"Event created successfully: {event.title}")
         return jsonify({"success": True, "message": "Event created successfully", "event_id": str(event._id)}), 201
@@ -29,7 +63,13 @@ def create_event():
 def get_events():
     try:
         events = Event.get_all()
-        return jsonify({"success": True, "events": events}), 200
+        events_with_images = []
+        for event in events:
+            event_data = event_schema.dump(event)
+            event_data['id'] = str(event['_id'])
+            event_data['image_url'] = f"/api/events/uploads/{event['title']}.svg"
+            events_with_images.append(event_data)
+        return jsonify({"success": True, "events": events_with_images}), 200
     except Exception as e:
         current_app.logger.error(f"An error occurred: {str(e)}")
         return jsonify({"success": False, "message": str(e)}), 500

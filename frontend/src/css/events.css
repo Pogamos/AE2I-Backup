@@ -173,6 +173,10 @@
   border-width: 2px;
 }
 
+.input-image {
+  border: none !important;
+}
+
 .ajout-event h3 {
   color: white;
   margin-top: 0%;
@@ -203,6 +207,12 @@
 
 #description-event {
   height: 18%;
+}
+
+.block-image {
+  position: fixed;
+  top: 74%;
+  left: 71%;
 }
 
 .enregistrer-event {

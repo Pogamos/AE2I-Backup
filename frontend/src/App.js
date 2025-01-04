@@ -12,39 +12,39 @@ function App() {
   });
 
   return (
-    <div>
-      <Navbar setStyleMarginLeft={setStyleMarginLeft} />
-      <div id="container" class="container" style={styleMarginLeft}>
-        <div className="content">
     <Router>
-      <div className="App">
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
-                <p>
-                  Edit <code>src/App.js</code> and save to reload.
-                </p>
-                <a
-                  className="App-link"
-                  href="https://reactjs.org"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Learn React
-                </a>
-              </header>
-            }
-          />
-          <Route path="/events" element={<Events />} />
-        </Routes>
-      </div>
-    </Router>
+      <div>
+        <Navbar setStyleMarginLeft={setStyleMarginLeft} />
+        <div id="container" className="container" style={styleMarginLeft}>
+          <div className="content">
+            <div className="App">
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    <header className="App-header">
+                      <img src={logo} className="App-logo" alt="logo" />
+                      <p>
+                        Edit <code>src/App.js</code> and save to reload.
+                      </p>
+                      <a
+                        className="App-link"
+                        href="https://reactjs.org"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Learn React
+                      </a>
+                    </header>
+                  }
+                />
+                <Route path="/events" element={<Events />} />
+              </Routes>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </Router>
   );
 }
 

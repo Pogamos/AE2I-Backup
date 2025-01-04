@@ -17,7 +17,7 @@ function Events() {
   };
 
   const recupEvent = () => {
-    fetch("http://localhost:5000/api/events", {
+    fetch("http://localhost:5000/api/events/", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -32,12 +32,13 @@ function Events() {
       .then((data) => {
         console.log("Success:", data);
 
-        const validEvents = data.map((element) => element);
+        const validEvents = data.events.map((element) => ({
+          ...element,
+          image_url: `http://localhost:5000${element.image_url}`,
+        }));
 
-        console.log(validEvents);
         setEvents((prevEvents) => {
           const combinedEvents = [...prevEvents, ...validEvents];
-
           return combinedEvents;
         });
       })
@@ -50,19 +51,29 @@ function Events() {
     const title = document.getElementById("event-title").value;
     const description = document.getElementById("description-event").value;
     const date = document.getElementById("date").value;
+    const heure = document.getElementById("heure").value;
+    const image = document.getElementById("image").files[0];
 
-    const event = {
-      title: title,
-      description: description,
-      date: date,
-    };
+    const dateTime = `${date}T${heure}:00`;
+    console.log(dateTime);
 
-    fetch("http://localhost:5000/api/events", {
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("date", dateTime);
+
+    if (image) {
+      formData.append("image", image);
+      formData.append("image_ext", image.name.split(".").pop());
+    }
+
+    fetch("http://localhost:5000/api/events/", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNjAwMTA3MCwianRpIjoiODE1YzA0NjYtNDY3Mi00YTM2LWI0MGUtMTZhZTE0NTVlNTRhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjY3NzdlNTI4MTA3MDNjNmY1NDIwYmIwMSIsIm5iZiI6MTczNjAwMTA3MCwiZXhwIjoxNzM2MDAxOTcwLCJyb2xlIjoiYWRtaW4ifQ.TuxyB0ASQMGMaX5BogM5mkG_kWygcMVMa_R9bs3aaxs",
       },
-      body: JSON.stringify(event),
+      body: formData,
     })
       .then((response) => {
         if (!response.ok) {
@@ -99,7 +110,6 @@ function Events() {
 
         const validPolls = data.map((element) => element);
 
-        console.log(validPolls);
         setPolls((prevPolls) => {
           const combinedPolls = [...prevPolls, ...validPolls];
 
@@ -125,13 +135,10 @@ function Events() {
         return response.json();
       })
       .then((data) => {
-        console.log("Success:", data.posts);
-
         const validSlides = data.posts
           .filter((element) => !element.deleted_at)
           .map((element) => element.link);
 
-        console.log(validSlides);
         setSlides((prevSlides) => {
           const combinedSlides = [...prevSlides, ...validSlides];
 
@@ -186,7 +193,6 @@ function Events() {
 
   const suivant = () => {
     setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-    console.log(slides[currentSlide]);
   };
 
   const pollEvent = () => {
@@ -205,10 +211,12 @@ function Events() {
   const cardEvent = () => {
     return events.map((element, index) => (
       <div key={index} className="card-main">
-        <img src="../svg/ae2i-logo_dark.svg" className="card-img" alt="..." />
+        {element.image_url && <img src={element.image_url} className="card-img" alt={element.title} />}
         <div className="card-body">
           <h3 className="card-title">{element.title}</h3>
-          <p className="card-time">{element.date}</p>
+          <p className="card-time">
+            {new Date(element.date).toLocaleDateString()}
+          </p>
           <p className="card-text">{element.description}</p>
         </div>
       </div>
@@ -216,7 +224,6 @@ function Events() {
   };
 
   const posts = () => {
-    console.log("slides", slides);
     return slides.map((element, index) => (
       <div
         key={index}
@@ -262,7 +269,10 @@ function Events() {
   }, [currentSlide]);
 
   useEffect(() => {
+    setEvents([]);
+    setSlides([]);
     recupPost();
+    recupEvent();
   }, []);
 
   return (
@@ -294,17 +304,7 @@ function Events() {
         >
           <h3>Ajouter un événement</h3>
         </button>
-        <div className="card-main">
-          <img src="../svg/ae2i-logo_dark.svg" className="card-img" alt="..." />
-          <div className="card-body">
-            <h3 className="card-title">Titre test</h3>
-            <p className="card-time">Jeudi 26 Octobre | 23h-2h</p>
-            <p className="card-text">
-              n. Le Lorem Ipsum est le faux texte standard de l'imprimerie
-              depuis les années 1500, quand un imprimeur anonyme assem
-            </p>
-          </div>
-        </div>
+        {cardEvent()}
         <div className="card-secondary">
           <img src="../svg/poll.svg" className="card-secondary-img" alt="..." />
           <div className="card-body">
@@ -361,7 +361,16 @@ function Events() {
                 <input type="text" id="prix" name="prix" />
               </div>
             </div>
-            <button className="enregistrer-event">
+            <div className="block-image">
+              <h4 htmlFor="image">Image</h4>
+              <input
+                type="file"
+                id="image"
+                className="input-image"
+                name="image"
+              />
+            </div>
+            <button className="enregistrer-event" onClick={envoiEvent}>
               <h3>Enregistrer l'événement</h3>
             </button>
           </div>
