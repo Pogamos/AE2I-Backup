@@ -6,7 +6,20 @@
   width: 100%; /* Ajoutez des marges pour un effet plus centré */
   border-radius: 15px; /* Bords arrondis en bas */
   min-height: 100%; /* Pour couvrir toute la hauteur de l'écran */
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
 
+}
+
+.polls-content {
+  max-height: 80vh; /* Ajustez la hauteur maximale selon vos besoins */
+  overflow-y: auto; /* Permet le défilement vertical */
+  padding: 10px;
+  scrollbar-width: thin; /* Style des barres de défilement pour les navigateurs compatibles */
+  scrollbar-color: #888 #444; /* Couleurs de la barre de défilement */
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Définit 2 colonnes */
 }
 
 .polls-header {
@@ -24,4 +37,12 @@
   padding: 40px 0 10px 30px;
   text-align: left;
   font-style: italic;
+}
+
+.polls-section-title {
+  color: #ff6f91; /* Rose vif */
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-transform: uppercase;
 }
