@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "../css/events.css";
 import "../css/cards.css";
 
@@ -9,11 +10,71 @@ function Events() {
   const [slides, setSlides] = useState([]);
   const [events, setEvents] = useState([]);
   const [polls, setPolls] = useState([]);
-
-  const role = "admin";
+  const [token, setToken] = useState("");
+  const [role, setRole] = useState("user");
 
   const handleReload = () => {
     window.location.reload();
+  };
+
+  const navigate = useNavigate();
+
+  //temporaire devonly car pas de sécurité sur le site
+  const login = () => {
+
+    const email = "john.admin@example.com"
+    const password = "Motdepasse123?"
+
+    const info = {
+      email: email,
+      password: password,
+    }
+
+    fetch("http://localhost:5000/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(info),
+    })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data);
+      setToken(data.access_token)
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+  };
+
+  //temp
+  const recupRole = () => {
+    
+    const email = "john.admin@example.com"
+
+    fetch(`http://localhost:5000/api/users/${email}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      setRole(data.user.role)
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
   };
 
   const recupEvent = () => {
@@ -30,7 +91,6 @@ function Events() {
         return response.json();
       })
       .then((data) => {
-        console.log("Success:", data);
 
         const validEvents = data.events.map((element) => ({
           ...element,
@@ -55,7 +115,6 @@ function Events() {
     const image = document.getElementById("image").files[0];
 
     const dateTime = `${date}T${heure}:00`;
-    console.log(dateTime);
 
     const formData = new FormData();
     formData.append("title", title);
@@ -71,7 +130,7 @@ function Events() {
       method: "POST",
       headers: {
         Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNjAwMTA3MCwianRpIjoiODE1YzA0NjYtNDY3Mi00YTM2LWI0MGUtMTZhZTE0NTVlNTRhIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjY3NzdlNTI4MTA3MDNjNmY1NDIwYmIwMSIsIm5iZiI6MTczNjAwMTA3MCwiZXhwIjoxNzM2MDAxOTcwLCJyb2xlIjoiYWRtaW4ifQ.TuxyB0ASQMGMaX5BogM5mkG_kWygcMVMa_R9bs3aaxs",
+          `Bearer ${token}`,
       },
       body: formData,
     })
@@ -93,7 +152,7 @@ function Events() {
   };
 
   const recupPoll = () => {
-    fetch("http://localhost:5000/api/polls", {
+    fetch("http://localhost:5000/api/polls/", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -106,9 +165,8 @@ function Events() {
         return response.json();
       })
       .then((data) => {
-        console.log("Success:", data);
 
-        const validPolls = data.map((element) => element);
+        const validPolls = data.polls.map((element) => element);
 
         setPolls((prevPolls) => {
           const combinedPolls = [...prevPolls, ...validPolls];
@@ -166,7 +224,7 @@ function Events() {
       headers: {
         "Content-Type": "application/json",
         Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNTkxODU2OCwianRpIjoiOWQ1NDg0ZTctZWZmNC00NGZmLThhY2YtM2ZkYWYzOWQyM2ZkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjY3NzdlNTI4MTA3MDNjNmY1NDIwYmIwMSIsIm5iZiI6MTczNTkxODU2OCwiZXhwIjoxNzM1OTE5NDY4LCJyb2xlIjoiYWRtaW4ifQ.RbhlIGrhnfGg4C0ytLzgPB4AEMk5YDLDNJ5NO3xzOP4",
+          `Bearer ${token}`,
       },
       body: JSON.stringify(post),
     })
@@ -197,11 +255,11 @@ function Events() {
 
   const pollEvent = () => {
     return polls.map((element, index) => (
-      <div key={index} className="card-secondary">
+      <div key={index} className="card-secondary" onClick={() => navigate('/polls')}>
         <img src="../svg/poll.svg" className="card-secondary-img" alt="..." />
         <div className="card-body">
           <p className="card-secondary-text">
-            Le sondage "{element.title}" - expire dans {element.description}
+            Il y a un nouveau sondage "{element.title}" {element.description}
           </p>
         </div>
       </div>
@@ -209,13 +267,19 @@ function Events() {
   };
 
   const cardEvent = () => {
+    const formatDate = (dateString) => {
+      const date = new Date(dateString);
+      const options = { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' };
+      return date.toLocaleDateString('fr-FR', options).replace(',', ' |');
+    };
+  
     return events.map((element, index) => (
       <div key={index} className="card-main">
         {element.image_url && <img src={element.image_url} className="card-img" alt={element.title} />}
         <div className="card-body">
           <h3 className="card-title">{element.title}</h3>
           <p className="card-time">
-            {new Date(element.date).toLocaleDateString()}
+            {formatDate(element.date)}
           </p>
           <p className="card-text">{element.description}</p>
         </div>
@@ -271,8 +335,12 @@ function Events() {
   useEffect(() => {
     setEvents([]);
     setSlides([]);
+    setPolls([]);
     recupPost();
     recupEvent();
+    recupPoll();
+    login();
+    recupRole();
   }, []);
 
   return (
@@ -305,26 +373,7 @@ function Events() {
           <h3>Ajouter un événement</h3>
         </button>
         {cardEvent()}
-        <div className="card-secondary">
-          <img src="../svg/poll.svg" className="card-secondary-img" alt="..." />
-          <div className="card-body">
-            <p className="card-secondary-text">
-              Le sondage “Date préférée pour le tournoi de foot?” - expire dans
-              13h37min... Dépêche toi!
-            </p>
-          </div>
-        </div>
-        <div className="card-expired">
-          <img src="../svg/ae2i-logo_dark.svg" className="card-img" alt="..." />
-          <div className="card-body">
-            <h3 className="card-title">Titre test</h3>
-            <p className="card-time">Jeudi 26 Octobre | 23h-2h</p>
-            <p className="card-text">
-              n. Le Lorem Ipsum est le faux texte standard de l'imprimerie
-              depuis les années 1500, quand un imprimeur anonyme assem
-            </p>
-          </div>
-        </div>
+        {pollEvent()}
       </div>
       <div className="ajout-shadow" style={{ display: ajoutEvent }}>
         <div className="ajout-event">

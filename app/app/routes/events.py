@@ -1,9 +1,8 @@
 from flask import Blueprint, jsonify, request, current_app, send_from_directory
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from ..models.events import Event, EventSchema
 from datetime import datetime
 from ..utils.tools import check_admin_permission
-from werkzeug.utils import secure_filename
 import os
 
 bp = Blueprint('events', __name__)
@@ -12,6 +11,13 @@ event_schema = EventSchema()
 # Configuration
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), '../../frontend/public/uploads')
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+# GET THE USER TOKEN
+@bp.route("/token", methods=["GET"])
+@jwt_required()
+def get_token():
+    user_data = get_jwt_identity()
+    return jsonify({"success": True, "user": user_data}), 200
 
 # GET EVENT IMAGE
 @bp.route('/uploads/<filename>')

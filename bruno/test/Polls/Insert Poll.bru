@@ -5,18 +5,19 @@ meta {
 }
 
 post {
-  url: http://localhost:5000/api/polls
+  url: http://localhost:5000/api/polls/
   body: json
   auth: none
 }
 
 headers {
   Content-Type: application/json
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNjAwNTA3MSwianRpIjoiZTI4ZGFiMmEtZmI4ZS00YTEwLWE3MWItMDQzZTMxYTA5ODRjIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjY3NzdlNTI4MTA3MDNjNmY1NDIwYmIwMSIsIm5iZiI6MTczNjAwNTA3MSwiZXhwIjoxNzM2MDA1OTcxLCJyb2xlIjoiYWRtaW4ifQ.NjMoJTUF_24MfVOUIDsbv9R8GlmDP55V31sFKhUiiFY
 }
 
 body:json {
   {
-    "titre": "Quel est votre langage préféré ?",
+    "title": "Quel est votre langage préféré ?",
     "description": "Votez pour votre langage de programmation favori.",
     "choices": [
       {

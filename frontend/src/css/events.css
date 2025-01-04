@@ -1,3 +1,4 @@
+/*Style par défaut*/
 .events {
   text-align: left;
 }
@@ -230,4 +231,89 @@
 .enregistrer-event h3 {
   margin-left: 0%;
   padding-top: 3%;
+}
+
+/* Styles pour les petits écrans */
+@media (max-width: 768px) {
+  .banner-top {
+    padding-top: 30px;
+    padding-left: 20px;
+    height: auto;
+    width: 100%;
+  }
+
+  .banner-logo {
+    width: 50%;
+    margin-left: 25%;
+    margin-top: -50px;
+  }
+
+  .carrousel-insta {
+    position: static !important;
+    margin-left: 0;
+    margin-top: 20px;
+    align-items: center;
+  }
+
+  .insta-button-precedent,
+  .insta-button-suivant {
+    margin: 10px 0;
+    padding: 0;
+  }
+
+  .ajouter-post {
+    margin-top: 20px;
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .ajout-shadow {
+    top: 10%;
+    left: 5%;
+    width: 90%;
+    height: 80%;
+  }
+
+  .ajout-post {
+    width: 100%;
+    height: auto;
+    margin-left: 0;
+  }
+
+  .ajout-post input {
+    width: 100%;
+  }
+
+  .ajouter {
+    margin-top: 20px;
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .ajouter-event {
+    margin-top: 10px;
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .ajout-event {
+    width: 100%;
+    height: auto;
+    margin-left: 0;
+  }
+
+  .block-image {
+    position: static;
+    top: auto;
+    left: auto;
+    margin-top: 20px;
+  }
+
+  .enregistrer-event {
+    position: static;
+    margin-top: 20px;
+    margin-left: 0;
+    width: 100%;
+    height: auto;
+  }
 }
