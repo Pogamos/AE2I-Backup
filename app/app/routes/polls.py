@@ -106,9 +106,9 @@ def create_response(poll_id):
         if not poll:
             current_app.logger.error(f"Poll not found: {poll_id}")
             return jsonify({"success": False, "message": "Poll not found"}), 404
-        
+
         data['user_id'] = get_jwt_identity()
-        
+
         existing_responses = Response.find_by_poll_id(poll_id)
         if any(response['user_id'] == data['user_id'] for response in existing_responses):
             current_app.logger.error(f"Response already exists for user_id: {data['user_id']}")

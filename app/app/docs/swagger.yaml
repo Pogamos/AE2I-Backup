@@ -3,7 +3,7 @@ info:
   description: "API documentation for AE2I application"
   version: "1.0.0"
   title: "AE2I API"
-host: "localhost:5000"
+host: "localhost:5001"
 basePath: "/api"
 schemes:
   - "http"
@@ -213,6 +213,8 @@ paths:
                 type: "string"
               link:
                 type: "string"
+      security:
+        - BearerAuth: []
       responses:
         201:
           description: "Post created successfully"
@@ -256,6 +258,8 @@ paths:
                 type: "string"
               link:
                 type: "string"
+      security:
+        - BearerAuth: []
       responses:
         200:
           description: "Post updated successfully"
@@ -272,6 +276,8 @@ paths:
           in: "path"
           required: true
           type: "string"
+      security:
+        - BearerAuth: []
       responses:
         200:
           description: "Post deleted successfully"
@@ -289,6 +295,8 @@ paths:
           in: "path"
           required: true
           type: "string"
+      security:
+        - BearerAuth: []
       responses:
         200:
           description: "Post soft deleted successfully"
@@ -304,6 +312,8 @@ paths:
           in: "path"
           required: true
           type: "string"
+      security:
+        - BearerAuth: []
       responses:
         200:
           description: "Post restored successfully"
@@ -341,6 +351,8 @@ paths:
                   properties:
                     choice_text:
                       type: "string"
+      security:
+        - BearerAuth: []
       responses:
         201:
           description: "Poll created successfully"
@@ -382,6 +394,8 @@ paths:
                 type: "string"
               description:
                 type: "string"
+      security:
+        - BearerAuth: []
       responses:
         200:
           description: "Poll updated successfully"
@@ -398,6 +412,8 @@ paths:
           in: "path"
           required: true
           type: "string"
+      security:
+        - BearerAuth: []
       responses:
         200:
           description: "Poll deleted successfully"
@@ -523,6 +539,8 @@ paths:
                 type: "number"
               photo:
                 type: "string"
+      security:
+        - BearerAuth: []
       responses:
         201:
           description: "Article created successfully"
@@ -568,6 +586,8 @@ paths:
                 type: "number"
               photo:
                 type: "string"
+      security:
+        - BearerAuth: []
       responses:
         200:
           description: "Article updated successfully"
@@ -584,6 +604,8 @@ paths:
           in: "path"
           required: true
           type: "string"
+      security:
+        - BearerAuth: []
       responses:
         200:
           description: "Article deleted successfully"
@@ -610,6 +632,8 @@ paths:
               date:
                 type: "string"
                 format: "date-time"
+      security:
+        - BearerAuth: []
       responses:
         201:
           description: "Event created successfully"
@@ -663,6 +687,8 @@ paths:
               date:
                 type: "string"
                 format: "date-time"
+      security:
+        - BearerAuth: []
       responses:
         200:
           description: "Event updated successfully"
@@ -679,6 +705,8 @@ paths:
           in: "path"
           required: true
           type: "string"
+      security:
+        - BearerAuth: []
       responses:
         200:
           description: "Event deleted successfully"
@@ -696,6 +724,8 @@ paths:
           in: "path"
           required: true
           type: "string"
+      security:
+        - BearerAuth: []
       responses:
         200:
           description: "Event soft deleted successfully"
@@ -711,6 +741,8 @@ paths:
           in: "path"
           required: true
           type: "string"
+      security:
+        - BearerAuth: []
       responses:
         200:
           description: "Event restored successfully"

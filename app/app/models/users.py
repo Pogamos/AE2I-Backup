@@ -32,7 +32,7 @@ class UserSchema(Schema):
 
 class User(BaseModel):
     """Modèle utilisateur pour MongoDB."""
-    collection = mongo.db.users 
+    collection = mongo.db.users
 
     def __init__(self, lastName, firstName, email, password, **kwargs):
         self.lastName = lastName
@@ -49,7 +49,7 @@ class User(BaseModel):
         user_data = self.__dict__.copy()
         result = self.collection.insert_one(user_data)
         self._id = result.inserted_id
-        
+
     def update(self, data):
         """Met à jour un utilisateur dans MongoDB."""
         result = self.collection.update_one(
@@ -57,7 +57,7 @@ class User(BaseModel):
             {"$set": data}
         )
         return result.modified_count > 0
-        
+
     def delete(self):
         """Supprime un utilisateur de MongoDB."""
         result = self.collection.delete_one({"_id": self._id})
@@ -68,9 +68,8 @@ class User(BaseModel):
     def find_by_email(cls, email):
         """Recherche un utilisateur par son email."""
         user = cls.collection.find_one({"email": email})
-        print(user)
         return cls.to_json(user) if user else None
-    
+
     # Return User object
     @classmethod
     def find_by_id(cls, user_id):
@@ -81,7 +80,7 @@ class User(BaseModel):
             user._id = user_data['_id']
             return user
         return None
-    
+
     @classmethod
     def get_all(cls):
         """Récupère tous les utilisateurs."""
@@ -102,7 +101,7 @@ class User(BaseModel):
         """Récupère le panier d'un utilisateur."""
         user = cls.collection.find_one({"_id": ObjectId(user_id)})
         return user.get("cart", [])
-    
+
     @classmethod
     def delete_from_cart(cls, user_id, item_id):
         """Supprime un élément du panier d'un utilisateur."""
@@ -111,7 +110,7 @@ class User(BaseModel):
             {"$pull": {"cart": {"productId": item_id}}}
         )
         return result.modified_count > 0
-    
+
     @classmethod
     def flush_cart(cls, user_id):
         """Vide le panier d'un utilisateur."""

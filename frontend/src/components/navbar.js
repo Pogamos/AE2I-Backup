@@ -147,7 +147,7 @@ function Navbar({ setStyleMarginLeft }) {
             />
           </svg>
           &nbsp;
-          <span className="nav_text">SONDAGE</span>
+          <span className="nav_text">SONDAGES</span>
         </a>
         <a href="/team" className="nav_item">
           <svg
