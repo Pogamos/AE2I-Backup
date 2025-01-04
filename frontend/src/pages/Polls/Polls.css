@@ -1,0 +1,22 @@
+/* Pour le conteneur principal */
+.main-container {
+    display: flex; /* Aligne la Navbar et la page Polls en ligne */
+  }
+
+  /* Navbar déjà présente */
+  .navbar {
+    background-color: #070b23; /* Exemple de fond sombre */
+    width: 200px; /* Largeur initiale */
+    min-height: 100vh; /* Prend toute la hauteur */
+    transition: width 0.3s ease; /* Animation pour un ajustement fluide */
+  }
+
+/* Conteneur pour Polls */
+.polls-container {
+    flex: 1; /* Occupe tout l'espace disponible */
+    background-color: #fff; /* Fond blanc */
+    padding: 10px; /* Padding sur tous les côtés */
+    border-radius: 20px; /* Coins arrondis */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Ombre légère */
+}
+
