@@ -3,6 +3,11 @@ from .extensions import jwt, mongo
 from .config import Config
 from .log_config import setup_logger
 from flasgger import Swagger
+from flask import Flask
+from flask_cors import CORS
+
+app = Flask(__name__)
+CORS(app)
 
 
 ####################################################################################################
