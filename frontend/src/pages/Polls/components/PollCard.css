@@ -1,47 +1,60 @@
 .poll-card {
-    width: 100%; /* Utilise toute la largeur de la colonne */
-    max-width: 600px; /* Définit une largeur maximale optionnelle pour éviter qu'elles ne soient trop larges */
-    box-sizing: border-box; /* Inclut le padding et la bordure dans la largeur totale */
-    padding: 20px;
-    background: linear-gradient(125deg, #070B23, #842A51);
-    border-radius: 16px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-    color: #fff;
-    font-family: "Arial", sans-serif;
-    margin-bottom: 10px;
-  }
+  width: 100%; /* Utilise toute la largeur de la colonne */
+  max-width: 600px; /* Définit une largeur maximale optionnelle pour éviter qu'elles ne soient trop larges */
+  box-sizing: border-box; /* Inclut le padding et la bordure dans la largeur totale */
+  padding: 20px;
+  background: linear-gradient(125deg, #070B23, #842A51);
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-family: "Arial", sans-serif;
+  margin-bottom: 10px;
+}
 
-  .poll-card-title {
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
+.poll-card-title {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
 
-  .poll-card-date {
-    font-size: 1rem;
-    margin-bottom: 20px;
-    color: #ccc;
-  }
+.poll-card-date {
+  font-size: 1rem;
+  margin-bottom: 20px;
+  color: #ccc;
+}
 
-  .poll-card-choices {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
+.poll-card-choices {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  list-style-type: none; /* Supprime les puces */
+  padding: 0; /* Supprime le padding par défaut */
+  margin: 0; /* Supprime les marges */
+}
 
-  .poll-card-choice {
-    background: rgba(255, 255, 255, 0.1);
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
-    color: #fff;
-    font-size: 1rem;
-    padding: 10px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 14px;
-    text-align: left;
-  }
+.poll-card-choice {
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: left;
+}
 
-  .poll-card-choice:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: #fff;
-  }
+.poll-card-choice button {
+  all: unset; /* Réinitialise tous les styles hérités */
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  border-radius: 8px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 1rem;
+  text-align: center;
+  transition: background 0.3s ease, border 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.poll-card-choice:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: #fff;
+}
