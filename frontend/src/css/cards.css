@@ -67,3 +67,33 @@
   border-radius: 20px;
   box-shadow: 15px 15px 20px rgba(0, 0, 0, 0.3);
 }
+
+/* Styles pour les petits écrans */
+@media (max-width: 768px) {
+  .card-main {
+    width: 100%;
+  }
+
+  .card-secondary {
+    width: 100%;
+  }
+
+  .card-expired {
+    width: 100%;
+  }
+}
+
+/* Styles pour les très petits écrans */
+@media (max-width: 480px) {
+  .card-main {
+    width: 140%;
+  }
+
+  .card-secondary {
+    width: 140%;
+  }
+
+  .card-expired {
+    width: 140%;
+  }
+}
