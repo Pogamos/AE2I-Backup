@@ -9,7 +9,7 @@ bp = Blueprint('events', __name__)
 event_schema = EventSchema()
 
 # Configuration
-UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), '../../frontend/public/uploads')
+UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), '../../uploads')
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # GET THE USER TOKEN
@@ -71,9 +71,10 @@ def get_events():
         events = Event.get_all()
         events_with_images = []
         for event in events:
+            truncated_title = event['title'].replace(" ", "_")
             event_data = event_schema.dump(event)
             event_data['id'] = str(event['_id'])
-            event_data['image_url'] = f"/api/events/uploads/{event['title']}.svg"
+            event_data['image_url'] = f"/api/events/uploads/{truncated_title}.svg"
             events_with_images.append(event_data)
         return jsonify({"success": True, "events": events_with_images}), 200
     except Exception as e:
