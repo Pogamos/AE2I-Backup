@@ -3,7 +3,7 @@ from .extensions import jwt, mongo
 from .config import Config
 from .log_config import setup_logger
 from flasgger import Swagger
-
+from flask_cors import CORS
 
 ####################################################################################################
 #                                                                                                  #
@@ -20,6 +20,7 @@ def create_app():
     # print("creating app :P")
     app = Flask(__name__)
     app.config.from_object(Config)
+    CORS(app)
 
     # Initialisation des extensions
     jwt.init_app(app)
