@@ -65,31 +65,41 @@ const ProfilePage = () => {
     }
   
     try {
+      let formData;
+      if (selectedFile) {
+        formData = new FormData();
+        Object.keys(editableProfile).forEach((key) => {
+          formData.append(key, editableProfile[key]);
+        });
+        formData.append('ppicture', selectedFile);  // Ajoute le fichier sélectionné
+      } else {
+        formData = { ...editableProfile };  // Envoie JSON si pas d'image
+      }
+  
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+  
+      if (selectedFile) {
+        headers['Content-Type'] = 'multipart/form-data';
+      }
+  
       const response = await axios.put(
         `http://localhost:5000/api/users/${editableProfile.email}`,
-        {
-          firstName: editableProfile.firstName,
-          lastName: editableProfile.lastName,
-          email: editableProfile.email,
-          bio: editableProfile.bio,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',  // Utilisation de JSON pur
-          },
-        }
+        formData,
+        { headers }
       );
   
-      setProfile(response.data.user || editableProfile); // Mettre à jour le profil localement
+      setProfile(response.data.user || editableProfile);  // Met à jour les données
       setMessage('Profil mis à jour avec succès !');
-      setIsModalOpen(false);
-      
+      setIsModalOpen(false);  // Ferme la modale après sauvegarde
     } catch (error) {
       console.error('Erreur lors de la mise à jour du profil :', error);
       setMessage('Une erreur est survenue lors de la mise à jour.');
     }
   };
+  
+  
   
 
   if (loading) {

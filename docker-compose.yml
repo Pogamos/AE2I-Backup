@@ -11,6 +11,7 @@ services:
       - FLASK_DEBUG=1
       - MONGO_URI=mongodb://mongo:27017/ae2iDB
     volumes:
+      - ./uploads:/app/uploads
       - ./app:/app
     depends_on:
       - mongo
