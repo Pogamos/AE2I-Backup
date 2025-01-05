@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
-<<<<<<< HEAD
 import { useNavigate } from "react-router-dom";
-=======
->>>>>>> origin/PageTeam
 import "../css/events.css";
 import "../css/cards.css";
 
@@ -13,19 +10,13 @@ function Events() {
   const [slides, setSlides] = useState([]);
   const [events, setEvents] = useState([]);
   const [polls, setPolls] = useState([]);
-<<<<<<< HEAD
   const [token, setToken] = useState("");
   const [role, setRole] = useState("user");
-=======
-
-  const role = "admin";
->>>>>>> origin/PageTeam
 
   const handleReload = () => {
     window.location.reload();
   };
 
-<<<<<<< HEAD
   const navigate = useNavigate();
 
   //temporaire devonly car pas de sécurité sur le site
@@ -88,10 +79,6 @@ function Events() {
 
   const recupEvent = () => {
     fetch("http://localhost:5000/api/events/", {
-=======
-  const recupEvent = () => {
-    fetch("http://localhost:5000/api/events", {
->>>>>>> origin/PageTeam
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -104,7 +91,6 @@ function Events() {
         return response.json();
       })
       .then((data) => {
-<<<<<<< HEAD
 
         const validEvents = data.events.map((element) => ({
           ...element,
@@ -113,16 +99,6 @@ function Events() {
 
         setEvents((prevEvents) => {
           const combinedEvents = [...prevEvents, ...validEvents];
-=======
-        console.log("Success:", data);
-
-        const validEvents = data.map((element) => element);
-
-        console.log(validEvents);
-        setEvents((prevEvents) => {
-          const combinedEvents = [...prevEvents, ...validEvents];
-
->>>>>>> origin/PageTeam
           return combinedEvents;
         });
       })
@@ -135,7 +111,6 @@ function Events() {
     const title = document.getElementById("event-title").value;
     const description = document.getElementById("description-event").value;
     const date = document.getElementById("date").value;
-<<<<<<< HEAD
     const heure = document.getElementById("heure").value;
     const image = document.getElementById("image").files[0];
 
@@ -158,21 +133,6 @@ function Events() {
           `Bearer ${token}`,
       },
       body: formData,
-=======
-
-    const event = {
-      title: title,
-      description: description,
-      date: date,
-    };
-
-    fetch("http://localhost:5000/api/events", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(event),
->>>>>>> origin/PageTeam
     })
       .then((response) => {
         if (!response.ok) {
@@ -192,11 +152,7 @@ function Events() {
   };
 
   const recupPoll = () => {
-<<<<<<< HEAD
     fetch("http://localhost:5000/api/polls/", {
-=======
-    fetch("http://localhost:5000/api/polls", {
->>>>>>> origin/PageTeam
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -209,17 +165,9 @@ function Events() {
         return response.json();
       })
       .then((data) => {
-<<<<<<< HEAD
 
         const validPolls = data.polls.map((element) => element);
 
-=======
-        console.log("Success:", data);
-
-        const validPolls = data.map((element) => element);
-
-        console.log(validPolls);
->>>>>>> origin/PageTeam
         setPolls((prevPolls) => {
           const combinedPolls = [...prevPolls, ...validPolls];
 
@@ -245,19 +193,10 @@ function Events() {
         return response.json();
       })
       .then((data) => {
-<<<<<<< HEAD
-=======
-        console.log("Success:", data.posts);
-
->>>>>>> origin/PageTeam
         const validSlides = data.posts
           .filter((element) => !element.deleted_at)
           .map((element) => element.link);
 
-<<<<<<< HEAD
-=======
-        console.log(validSlides);
->>>>>>> origin/PageTeam
         setSlides((prevSlides) => {
           const combinedSlides = [...prevSlides, ...validSlides];
 
@@ -285,11 +224,7 @@ function Events() {
       headers: {
         "Content-Type": "application/json",
         Authorization:
-<<<<<<< HEAD
           `Bearer ${token}`,
-=======
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNTkxODU2OCwianRpIjoiOWQ1NDg0ZTctZWZmNC00NGZmLThhY2YtM2ZkYWYzOWQyM2ZkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjY3NzdlNTI4MTA3MDNjNmY1NDIwYmIwMSIsIm5iZiI6MTczNTkxODU2OCwiZXhwIjoxNzM1OTE5NDY4LCJyb2xlIjoiYWRtaW4ifQ.RbhlIGrhnfGg4C0ytLzgPB4AEMk5YDLDNJ5NO3xzOP4",
->>>>>>> origin/PageTeam
       },
       body: JSON.stringify(post),
     })
@@ -316,27 +251,15 @@ function Events() {
 
   const suivant = () => {
     setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-<<<<<<< HEAD
-=======
-    console.log(slides[currentSlide]);
->>>>>>> origin/PageTeam
   };
 
   const pollEvent = () => {
     return polls.map((element, index) => (
-<<<<<<< HEAD
       <div key={index} className="card-secondary" onClick={() => navigate('/polls')}>
         <img src="../svg/poll.svg" className="card-secondary-img" alt="..." />
         <div className="card-body">
           <p className="card-secondary-text">
             Il y a un nouveau sondage "{element.title}" {element.description}
-=======
-      <div key={index} className="card-secondary">
-        <img src="../svg/poll.svg" className="card-secondary-img" alt="..." />
-        <div className="card-body">
-          <p className="card-secondary-text">
-            Le sondage "{element.title}" - expire dans {element.description}
->>>>>>> origin/PageTeam
           </p>
         </div>
       </div>
@@ -344,7 +267,6 @@ function Events() {
   };
 
   const cardEvent = () => {
-<<<<<<< HEAD
     const formatDate = (dateString) => {
       const date = new Date(dateString);
       const options = { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' };
@@ -359,14 +281,6 @@ function Events() {
           <p className="card-time">
             {formatDate(element.date)}
           </p>
-=======
-    return events.map((element, index) => (
-      <div key={index} className="card-main">
-        <img src="../svg/ae2i-logo_dark.svg" className="card-img" alt="..." />
-        <div className="card-body">
-          <h3 className="card-title">{element.title}</h3>
-          <p className="card-time">{element.date}</p>
->>>>>>> origin/PageTeam
           <p className="card-text">{element.description}</p>
         </div>
       </div>
@@ -374,10 +288,6 @@ function Events() {
   };
 
   const posts = () => {
-<<<<<<< HEAD
-=======
-    console.log("slides", slides);
->>>>>>> origin/PageTeam
     return slides.map((element, index) => (
       <div
         key={index}
@@ -423,7 +333,6 @@ function Events() {
   }, [currentSlide]);
 
   useEffect(() => {
-<<<<<<< HEAD
     setEvents([]);
     setSlides([]);
     setPolls([]);
@@ -432,9 +341,6 @@ function Events() {
     recupPoll();
     login();
     recupRole();
-=======
-    recupPost();
->>>>>>> origin/PageTeam
   }, []);
 
   return (
@@ -466,42 +372,8 @@ function Events() {
         >
           <h3>Ajouter un événement</h3>
         </button>
-<<<<<<< HEAD
         {cardEvent()}
         {pollEvent()}
-=======
-        <div className="card-main">
-          <img src="../svg/ae2i-logo_dark.svg" className="card-img" alt="..." />
-          <div className="card-body">
-            <h3 className="card-title">Titre test</h3>
-            <p className="card-time">Jeudi 26 Octobre | 23h-2h</p>
-            <p className="card-text">
-              n. Le Lorem Ipsum est le faux texte standard de l'imprimerie
-              depuis les années 1500, quand un imprimeur anonyme assem
-            </p>
-          </div>
-        </div>
-        <div className="card-secondary">
-          <img src="../svg/poll.svg" className="card-secondary-img" alt="..." />
-          <div className="card-body">
-            <p className="card-secondary-text">
-              Le sondage “Date préférée pour le tournoi de foot?” - expire dans
-              13h37min... Dépêche toi!
-            </p>
-          </div>
-        </div>
-        <div className="card-expired">
-          <img src="../svg/ae2i-logo_dark.svg" className="card-img" alt="..." />
-          <div className="card-body">
-            <h3 className="card-title">Titre test</h3>
-            <p className="card-time">Jeudi 26 Octobre | 23h-2h</p>
-            <p className="card-text">
-              n. Le Lorem Ipsum est le faux texte standard de l'imprimerie
-              depuis les années 1500, quand un imprimeur anonyme assem
-            </p>
-          </div>
-        </div>
->>>>>>> origin/PageTeam
       </div>
       <div className="ajout-shadow" style={{ display: ajoutEvent }}>
         <div className="ajout-event">
@@ -538,7 +410,6 @@ function Events() {
                 <input type="text" id="prix" name="prix" />
               </div>
             </div>
-<<<<<<< HEAD
             <div className="block-image">
               <h4 htmlFor="image">Image</h4>
               <input
@@ -549,9 +420,6 @@ function Events() {
               />
             </div>
             <button className="enregistrer-event" onClick={envoiEvent}>
-=======
-            <button className="enregistrer-event">
->>>>>>> origin/PageTeam
               <h3>Enregistrer l'événement</h3>
             </button>
           </div>
