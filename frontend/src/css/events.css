@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 /*Style par défaut*/
+=======
+>>>>>>> origin/PageTeam
 .events {
   text-align: left;
 }
@@ -174,10 +177,13 @@
   border-width: 2px;
 }
 
+<<<<<<< HEAD
 .input-image {
   border: none !important;
 }
 
+=======
+>>>>>>> origin/PageTeam
 .ajout-event h3 {
   color: white;
   margin-top: 0%;
@@ -210,12 +216,15 @@
   height: 18%;
 }
 
+<<<<<<< HEAD
 .block-image {
   position: fixed;
   top: 74%;
   left: 71%;
 }
 
+=======
+>>>>>>> origin/PageTeam
 .enregistrer-event {
   position: fixed;
   margin-top: -35%;
@@ -231,6 +240,7 @@
 .enregistrer-event h3 {
   margin-left: 0%;
   padding-top: 3%;
+<<<<<<< HEAD
 }
 
 /* Styles pour les petits écrans */
@@ -416,4 +426,6 @@
     margin-left: 8%;
     width: 70%;
   }
+=======
+>>>>>>> origin/PageTeam
 }

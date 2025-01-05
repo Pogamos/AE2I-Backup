@@ -438,6 +438,11 @@
 
 from app import create_app, create_logger
 from flask import request, current_app
+from flask import Flask
+from flask_cors import CORS
+
+app = Flask(__name__)
+CORS(app)
 
 app = create_app()
 

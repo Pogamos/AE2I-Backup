@@ -67,6 +67,7 @@
   border-radius: 20px;
   box-shadow: 15px 15px 20px rgba(0, 0, 0, 0.3);
 }
+<<<<<<< HEAD
 
 /* Styles pour les petits écrans */
 @media (max-width: 768px) {
@@ -97,3 +98,5 @@
     width: 140%;
   }
 }
+=======
+>>>>>>> origin/PageTeam

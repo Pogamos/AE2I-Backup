@@ -4,7 +4,7 @@ from ..models.users import User
 from ..utils.tools import check_basic_permission
 
 bp = Blueprint('users', __name__)
-
+    
 # GET ALL USERS
 @bp.route("/", methods=["GET"])
 def get_users():
