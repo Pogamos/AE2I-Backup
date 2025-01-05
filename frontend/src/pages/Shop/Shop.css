@@ -1,49 +1,94 @@
 /* Conteneur principal */
 .shop-container {
-    background-color: #e9e9e9; /* Fond gris */
-    overflow: hidden;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    border-radius: 15px;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
+  background-color: #e9e9e9; /* Fond gris clair */
+  overflow: hidden;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  border-radius: 15px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
 
-  /* Contenu de la boutique */
-  .shop-content {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding: 20px;
-  }
+/* En-tête de la boutique */
+.shop-header {
+  background-color: white; /* Bannière blanche */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding: 20px 0;
+}
 
-  /* Liste des produits */
-  .product-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-  }
+.shop-title {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 800;
+  color: #070b23;
+  font-style: italic;
+}
 
-  /* En-tête de la boutique */
-  .shop-header {
-    background-color: white; /* Bannière blanche */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    padding: 20px 0;
-  }
+/* Contenu de la boutique */
+.shop-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+}
 
-  .shop-title {
-    margin: 0;
-    font-size: 30px;
-    font-weight: 800;
-    color: #070b23;
-    font-style: italic;
-  }
+/* Conteneur pour le filtre et le bouton panier */
+.filter-and-cart {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
 
-  /* Texte de chargement ou erreur */
-  .shop-content p {
-    text-align: center;
-    font-size: 16px;
-    color: #555;
-  }
+/* Bouton "Voir mon panier" */
+.view-cart-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #070B23, #2C2F42); /* Dégradé */
+  color: white;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 15px; /* Bord arrondi */
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Effet hover pour le bouton "Voir mon panier" */
+.view-cart-button:hover {
+  transform: scale(1.02); /* Agrandissement */
+}
+
+/* SVG dans le bouton "Voir mon panier" */
+.view-cart-button svg {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0; /* Évite que le SVG se redimensionne */
+}
+
+/* Texte dans le bouton "Voir mon panier" */
+.view-cart-button span {
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+/* Liste des produits */
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+/* Texte de chargement ou erreur */
+.shop-content p {
+  text-align: center;
+  font-size: 16px;
+  color: #555;
+}

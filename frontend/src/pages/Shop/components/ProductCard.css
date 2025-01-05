@@ -1,57 +1,73 @@
 .product-card {
-    background: linear-gradient(135deg, #070B23, #77274C); /* Dégradé de couleurs */
-    border: none;
-    border-radius: 8px;
-    padding: 16px;
-    text-align: center;
-    max-width: 220px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    color: white; /* Texte en blanc pour un bon contraste */
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
+  background: linear-gradient(135deg, #070b23, #77274c); /* Dégradé du fond */
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  max-width: 250px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  color: white; /* Texte par défaut en blanc */
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+}
 
-  .product-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
-  }
+.product-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
+}
 
-  .product-image {
-    width: 100%;
-    height: auto;
-    border-radius: 4px;
-    margin-bottom: 10px;
-  }
+.product-image {
+  width: 100%;
+  height: auto;
+  margin-bottom: 15px;
+}
 
-  .product-title {
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin: 10px 0;
-  }
+.product-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: white; /* Titre en blanc */
+}
 
-  .product-description {
-    font-size: 0.9rem;
-    color: #e0e0e0; /* Gris clair pour un bon contraste */
-    margin: 10px 0;
-  }
+.product-price {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: white; /* Prix en blanc */
+  margin-bottom: 10px;
+}
 
-  .product-price {
-    font-size: 1.1rem;
-    font-weight: bold;
-    color: #fff; /* Couleur blanche pour le prix */
-    margin: 10px 0;
-  }
+/* Bouton favoris */
+.add-to-favorites {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: white;
+  color: #77274c;
+  border: none;
+  padding: 8px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
 
-  .add-to-cart {
-    background-color: rgba(255, 255, 255, 0.1); /* Bouton semi-transparent */
-    color: white;
-    padding: 10px 15px;
-    border: 1px solid white;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: background-color 0.3s ease;
-  }
+.add-to-favorites:hover {
+  background-color: #f3f3f3;
+  transform: scale(1.1);
+}
 
-  .add-to-cart:hover {
-    background-color: rgba(255, 255, 255, 0.3); /* Bouton plus clair au survol */
-  }
+/* Checkbox personnalisée */
+.product-card input[type="checkbox"] {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid white;
+  border-radius: 4px;
+  margin-right: 10px;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.product-card input[type="checkbox"]:checked {
+  background-color: white;
+}
