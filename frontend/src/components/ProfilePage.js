@@ -5,93 +5,95 @@ import '../css/ProfilePage.css';
 
 const ProfilePage = () => {
   const [profile, setProfile] = useState(null);
-  const [editableProfile, setEditableProfile] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editableProfile, setEditableProfile] = useState({});
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      const token = localStorage.getItem('token');
-      const email = localStorage.getItem('email');
-  
-      console.log('Token récupéré:', token);
-      console.log('Email récupéré:', email);
-  
-      if (!token || !email) {
-        console.error('Token ou email manquant');
-        navigate('/login'); // Redirection
-        return;
-      }
-  
-      try {
-        const response = await axios.get(`http://localhost:5000/api/users/${email}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        console.log('Données du profil récupérées :', response.data);
-        setProfile(response.data.user || response.data);
-      } catch (error) {
-        console.error('Erreur lors de la récupération des données utilisateur :', error);
-        navigate('/login');
-      }
-    };
-  
-    fetchProfile();
-  }, [navigate]);
-  
-
-  const handleEdit = () => {
-    setEditableProfile({ ...profile });
-    setIsEditing(true);
-  };
-
-  const handleSave = async () => {
     const token = localStorage.getItem('token');
-    const email = profile.email;
-  
+    const email = localStorage.getItem('email');
+
     if (!token || !email) {
-      console.error('Token ou email manquant');
-      alert("Erreur : Vous n'êtes pas authentifié.");
+      alert("Vous devez être connecté pour accéder à cette page.");
       navigate('/login');
       return;
     }
-  
-    const dataToUpdate = {
-      lastName: editableProfile.lastName,
-      firstName: editableProfile.firstName,
-      email: editableProfile.email,
-    };
-  
-    console.log("Données envoyées :", dataToUpdate); // Affichage pour debug
+
+    axios
+      .get(`http://localhost:5000/api/users/${email}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        setProfile(response.data.user || response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error('Erreur lors de la récupération des données utilisateur :', error);
+        setLoading(false);
+        alert('Session expirée. Veuillez vous reconnecter.');
+        navigate('/login');
+      });
+  }, [navigate]);
+
+  const handleEdit = () => {
+    setEditableProfile({ ...profile }); // Copier les données actuelles dans l'objet modifiable
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditableProfile({ ...editableProfile, [name]: value });
+  };
+
+  const handleFileChange = (e) => {
+    setSelectedFile(e.target.files[0]);
+  };
+
+  const handleSave = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert("Session expirée. Veuillez vous reconnecter.");
+      return;
+    }
   
     try {
-      const response = await axios.put(`http://localhost:5000/api/users/${email}`, dataToUpdate, {
-        headers: {
-          Authorization: `Bearer ${token}`, // Vérifie que ce n'est pas `undefined`
+      const response = await axios.put(
+        `http://localhost:5000/api/users/${editableProfile.email}`,
+        {
+          firstName: editableProfile.firstName,
+          lastName: editableProfile.lastName,
+          email: editableProfile.email,
+          bio: editableProfile.bio,
         },
-      });
-      setProfile(response.data.user || response.data);
-      setIsEditing(false);
-      alert('Profil mis à jour avec succès !');
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',  // Utilisation de JSON pur
+          },
+        }
+      );
+  
+      setProfile(response.data.user || editableProfile); // Mettre à jour le profil localement
+      setMessage('Profil mis à jour avec succès !');
+      setIsModalOpen(false);
+      
     } catch (error) {
       console.error('Erreur lors de la mise à jour du profil :', error);
-      alert('Une erreur est survenue lors de la mise à jour.');
+      setMessage('Une erreur est survenue lors de la mise à jour.');
     }
   };
   
 
-  const handleCancel = () => {
-    setEditableProfile(null);
-    setIsEditing(false);
-  };
-
-  if (!profile) {
-    return (
-      <div className="profile-container">
-        <p>Chargement du profil...</p>
-      </div>
-    );
+  if (loading) {
+    return <div className="profile-container">Chargement...</div>;
   }
 
   return (
@@ -100,56 +102,90 @@ const ProfilePage = () => {
       <div className="profile-card">
         <div className="profile-header">
           <img
-            src={profile.ppicture ? `http://localhost:5000/${profile.ppicture}` : 'https://via.placeholder.com/150'}
+            src={profile.ppicture || 'https://via.placeholder.com/150'}
             alt="Profile"
             className="profile-image"
           />
           <div className="profile-info">
-            <h2>{profile.firstName} {profile.lastName}</h2>
-            <p className="profile-email">{profile.email}</p>
+            <h2>
+              {profile.firstName} {profile.lastName}
+              <button className="edit-button" onClick={handleEdit}>
+                Modifier
+              </button>
+            </h2>
+            <p>{profile.email}</p>
+            <p>Rôle : {profile.role || 'Utilisateur standard'}</p>
           </div>
-          <p className="profile-role">Rôle : {profile.role || 'Utilisateur standard'}</p>
         </div>
-        <div className="profile-footer">
-          {isEditing ? (
-            <>
+        <div className="profile-bio">
+          <h3>Bio</h3>
+          <p>{profile.bio || 'Aucune bio disponible.'}</p>
+        </div>
+      </div>
+
+      {isModalOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>Modifier le profil</h2>
+            <form onSubmit={handleSave}>
+              <label>Prénom :</label>
               <input
                 type="text"
-                value={editableProfile.lastName}
-                onChange={(e) => setEditableProfile({ ...editableProfile, lastName: e.target.value })}
-                placeholder="Nom"
-                className="input-field"
-              />
-              <input
-                type="text"
-                value={editableProfile.firstName}
-                onChange={(e) => setEditableProfile({ ...editableProfile, firstName: e.target.value })}
+                name="firstName"
+                value={editableProfile.firstName || ''}
+                onChange={handleInputChange}
+                className="modal-input"
                 placeholder="Prénom"
-                className="input-field"
+                required
               />
+
+              <label>Nom :</label>
+              <input
+                type="text"
+                name="lastName"
+                value={editableProfile.lastName || ''}
+                onChange={handleInputChange}
+                className="modal-input"
+                placeholder="Nom"
+                required
+              />
+
+              <label>Email :</label>
               <input
                 type="email"
-                value={editableProfile.email}
-                onChange={(e) => setEditableProfile({ ...editableProfile, email: e.target.value })}
+                name="email"
+                value={editableProfile.email || ''}
+                onChange={handleInputChange}
+                className="modal-input"
                 placeholder="Email"
-                className="input-field"
+                required
               />
-              <div className="profile-buttons">
-                <button className="profile-button save-button" onClick={handleSave}>
+
+              <label>Bio :</label>
+              <textarea
+                name="bio"
+                value={editableProfile.bio || ''}
+                onChange={handleInputChange}
+                className="modal-input"
+                placeholder="Bio"
+              ></textarea>
+
+              <label>Photo de profil :</label>
+              <input type="file" name="ppicture" onChange={handleFileChange} className="modal-input" />
+
+              <div className="modal-buttons">
+                <button type="submit" className="modal-button">
                   Enregistrer
                 </button>
-                <button className="profile-button cancel-button" onClick={handleCancel}>
+                <button type="button" className="modal-button cancel" onClick={handleCloseModal}>
                   Annuler
                 </button>
               </div>
-            </>
-          ) : (
-            <button className="profile-button edit-button" onClick={handleEdit}>
-              Modifier
-            </button>
-          )}
+            </form>
+            {message && <p className="message">{message}</p>}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
