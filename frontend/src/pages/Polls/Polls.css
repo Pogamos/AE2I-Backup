@@ -9,7 +9,6 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
-
 }
 
 .polls-content {
@@ -20,6 +19,7 @@
   scrollbar-color: #888 #444; /* Couleurs de la barre de défilement */
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* Définit 2 colonnes */
+  height: 100vh;
 }
 
 .polls-header {
@@ -45,4 +45,53 @@
   font-weight: bold;
   margin-bottom: 10px;
   text-transform: uppercase;
+}
+
+.poll-card-vote-button {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: #D91663; /* Couleur rose vif */
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 15px;
+  font-size: 1rem;
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.poll-card-vote-button:hover {
+  background: #b01453; /* Couleur plus sombre au survol */
+  transform: scale(1.05); /* Léger agrandissement au survol */
+}
+
+.poll-card-vote-button:active {
+  transform: scale(0.95); /* Réduction lors du clic */
+}
+
+.poll-card-vote-button:hover {
+  background: #e05575; /* Couleur plus sombre au survol */
+  transform: scale(1.05); /* Léger agrandissement au survol */
+}
+
+.poll-card-vote-button:active {
+  transform: scale(0.95); /* Réduction lors du clic */
+}
+
+.poll-card-choice button {
+  all: unset; /* Réinitialise tous les styles hérités */
+  width: 100%;
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; /* Prend la même hauteur que les autres items sur la ligne */
+}
+
+.poll-card-choice:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: #fff;
 }

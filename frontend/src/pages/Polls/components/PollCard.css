@@ -1,4 +1,5 @@
 .poll-card {
+  position: relative; /* Permet de positionner le bouton en bas à droite */
   width: 100%; /* Utilise toute la largeur de la colonne */
   max-width: 600px; /* Définit une largeur maximale optionnelle pour éviter qu'elles ne soient trop larges */
   box-sizing: border-box; /* Inclut le padding et la bordure dans la largeur totale */
@@ -29,32 +30,74 @@
   list-style-type: none; /* Supprime les puces */
   padding: 0; /* Supprime le padding par défaut */
   margin: 0; /* Supprime les marges */
+  align-items: stretch; /* Étire les items pour qu'ils aient la même hauteur */
 }
 
 .poll-card-choice {
   color: #fff;
-  font-size: 1rem;
-  cursor: pointer;
   font-size: 14px;
-  text-align: left;
-}
-
-.poll-card-choice button {
-  all: unset; /* Réinitialise tous les styles hérités */
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background: rgba(255, 255, 255, 0.1);
   border: 2px solid rgba(255, 255, 255, 0.3);
-  color: #fff;
   border-radius: 8px;
   padding: 10px 15px;
-  cursor: pointer;
-  font-size: 1rem;
-  text-align: center;
   transition: background 0.3s ease, border 0.3s ease;
-  width: 100%;
-  box-sizing: border-box;
 }
 
 .poll-card-choice:hover {
   background: rgba(255, 255, 255, 0.2);
   border-color: #fff;
+}
+
+.poll-card-vote-button {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: #730C34; /* Couleur par défaut (aucune réponse cochée) */
+  color: #E3E3E3; /* Couleur du texte par défaut */
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 800; /* Texte en gras */
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.3s ease, transform 0.2s ease, color 0.3s ease;
+}
+
+.poll-card-vote-button:hover {
+  background: #B01250; /* Couleur au survol */
+  transform: scale(1.05); /* Léger agrandissement au survol */
+  color: #fff; /* Texte blanc au survol */
+}
+
+.poll-card-vote-button.active {
+  background: #D91663; /* Couleur lorsque réponse cochée */
+  color: #fff; /* Texte blanc */
+}
+
+.poll-card-vote-button:active {
+  transform: scale(0.95); /* Réduction lors du clic */
+}
+
+.poll-card-choice.selected {
+  background: #d91663;
+  color: #fff;
+  border-color: #d91663;
+}
+
+.poll-card-vote-button.active {
+  background: #d91663;
+  color: #fff;
+  cursor: pointer;
+}
+
+.poll-card-vote-button.inactive {
+  background: #730c34;
+  color: #e3e3e3;
+  cursor: not-allowed;
 }

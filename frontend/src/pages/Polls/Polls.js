@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PollCard from "./components/PollCard.js";
+import AnsweredPolls from "./components/AnsweredPolls.js";
 import "./Polls.css";
 
 const Polls = () => {
@@ -7,6 +8,7 @@ const Polls = () => {
   const [loading, setLoading] = useState(true); // Indique si les données sont en cours de chargement
   const [error, setError] = useState(null); // Stocke les éventuelles erreurs
 
+  // Récupération des sondages depuis l'API
   useEffect(() => {
     fetch("http://localhost:5001/api/polls")
       .then((response) => {
@@ -16,7 +18,13 @@ const Polls = () => {
         return response.json();
       })
       .then((data) => {
-        setPolls(data.polls || []); // Stocke tous les sondages reçus
+        // Ajoute `isVoted` et `selectedChoice` par défaut à chaque sondage
+        const pollsWithState = data.polls.map((poll) => ({
+          ...poll,
+          isVoted: false, // Par défaut, le sondage n'est pas voté
+          selectedChoice: null, // Aucune réponse sélectionnée
+        }));
+        setPolls(pollsWithState);
         setLoading(false);
       })
       .catch((error) => {
@@ -24,6 +32,18 @@ const Polls = () => {
         setLoading(false);
       });
   }, []);
+
+  // Gestion du vote
+  const handleVote = (pollId, selectedChoice) => {
+    // Met à jour uniquement le sondage voté
+    setPolls((prevPolls) =>
+      prevPolls.map((poll) =>
+        poll._id === pollId
+          ? { ...poll, isVoted: true, selectedChoice } // Marque ce sondage comme voté
+          : poll // Les autres sondages restent inchangés
+      )
+    );
+  };
 
   return (
     <div className="polls-container">
@@ -36,9 +56,13 @@ const Polls = () => {
         ) : error ? (
           <p>Erreur : {error}</p>
         ) : polls.length > 0 ? (
-          polls.map((poll, pollIndex) => (
-            <PollCard key={pollIndex} poll={poll} />
-          ))
+          polls.map((poll) =>
+            poll.isVoted ? (
+              <AnsweredPolls key={poll._id} poll={poll} />
+            ) : (
+              <PollCard key={poll._id} poll={poll} onVote={handleVote} />
+            )
+          )
         ) : (
           <p>Aucun sondage disponible.</p>
         )}
