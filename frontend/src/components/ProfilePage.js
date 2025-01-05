@@ -19,7 +19,7 @@ const ProfilePage = () => {
   
       if (!token || !email) {
         console.error('Token ou email manquant');
-        navigate('/login');
+        navigate('/login'); // Redirection
         return;
       }
   
@@ -33,7 +33,7 @@ const ProfilePage = () => {
         setProfile(response.data.user || response.data);
       } catch (error) {
         console.error('Erreur lors de la récupération des données utilisateur :', error);
-        navigate('/login'); 
+        navigate('/login');
       }
     };
   
@@ -48,17 +48,27 @@ const ProfilePage = () => {
 
   const handleSave = async () => {
     const token = localStorage.getItem('token');
-    const email = profile.email; // Utilisation de l'email dans la route PUT
+    const email = profile.email;
+  
+    if (!token || !email) {
+      console.error('Token ou email manquant');
+      alert("Erreur : Vous n'êtes pas authentifié.");
+      navigate('/login');
+      return;
+    }
+  
     const dataToUpdate = {
       lastName: editableProfile.lastName,
       firstName: editableProfile.firstName,
       email: editableProfile.email,
     };
-
+  
+    console.log("Données envoyées :", dataToUpdate); // Affichage pour debug
+  
     try {
       const response = await axios.put(`http://localhost:5000/api/users/${email}`, dataToUpdate, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`, // Vérifie que ce n'est pas `undefined`
         },
       });
       setProfile(response.data.user || response.data);
@@ -69,6 +79,7 @@ const ProfilePage = () => {
       alert('Une erreur est survenue lors de la mise à jour.');
     }
   };
+  
 
   const handleCancel = () => {
     setEditableProfile(null);
@@ -107,30 +118,33 @@ const ProfilePage = () => {
                 value={editableProfile.lastName}
                 onChange={(e) => setEditableProfile({ ...editableProfile, lastName: e.target.value })}
                 placeholder="Nom"
+                className="input-field"
               />
               <input
                 type="text"
                 value={editableProfile.firstName}
                 onChange={(e) => setEditableProfile({ ...editableProfile, firstName: e.target.value })}
                 placeholder="Prénom"
+                className="input-field"
               />
               <input
                 type="email"
                 value={editableProfile.email}
                 onChange={(e) => setEditableProfile({ ...editableProfile, email: e.target.value })}
                 placeholder="Email"
+                className="input-field"
               />
               <div className="profile-buttons">
-                <button className="profile-button" onClick={handleSave}>
+                <button className="profile-button save-button" onClick={handleSave}>
                   Enregistrer
                 </button>
-                <button className="cancel-button" onClick={handleCancel}>
+                <button className="profile-button cancel-button" onClick={handleCancel}>
                   Annuler
                 </button>
               </div>
             </>
           ) : (
-            <button className="profile-button" onClick={handleEdit}>
+            <button className="profile-button edit-button" onClick={handleEdit}>
               Modifier
             </button>
           )}

@@ -7,8 +7,10 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProfilePage from "./components/ProfilePage";
 import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
+import './css/ProfilePage.css';
 
 
+  
 function App() {
   const [styleMarginLeft, setStyleMarginLeft] = useState({
     marginLeft: "100px",

@@ -20,8 +20,11 @@ const LoginPage = () => {
         email,
         password,
       });
+      console.log('Données de connexion reçues :', response.data);
+      localStorage.setItem('token', response.data.access_token);
+      console.log("Données de connexion :", response.data);
+      
 
-      localStorage.setItem('token', response.data.token);
       localStorage.setItem('email', email);
       navigate('/myaccount'); 
     } catch (error) {

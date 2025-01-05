@@ -29,24 +29,31 @@ def get_user_by_email(email):
         return jsonify({"success": False, "message": str(e)}), 500
 
 # UPDATE USER
-@bp.route("/<string:user_id>", methods=["PUT"])
+@bp.route("/<string:email>", methods=["PUT"])
 @jwt_required()
-def update_user(user_id):
-    if not check_basic_permission(user_id):
-        return jsonify({"success": False, "message": "Permission denied"}), 403
+def update_user(email):
     try:
-        user = User.find_by_id(user_id)
-        if not user:
-            current_app.logger.error(f"User not found: {user_id}")
-            return jsonify({"success": False, "message": "User not found"}), 404
-
         data = request.get_json()
+        if not data:
+            return jsonify({"success": False, "message": "Données manquantes"}), 400
+
+        # Exemple de log pour vérifier les données
+        current_app.logger.info(f"Requête PUT reçue avec données : {data}")
+
+        # Vérification des champs obligatoires
+        if "firstName" not in data or "lastName" not in data or "email" not in data:
+            return jsonify({"success": False, "message": "Champs manquants"}), 422
+
+        user = User.find_by_email(email)
+        if not user:
+            return jsonify({"success": False, "message": "Utilisateur non trouvé"}), 404
+
         user.update(data)
-        current_app.logger.info(f"User updated successfully: {user_id}")
-        return jsonify({"success": True, "message": "User updated successfully"}), 200
+        return jsonify({"success": True, "message": "Utilisateur mis à jour"}), 200
     except Exception as e:
-        current_app.logger.error(f"An error occurred: {str(e)}")
+        current_app.logger.error(f"Erreur lors de la mise à jour : {str(e)}")
         return jsonify({"success": False, "message": str(e)}), 500
+
 
 # DELETE USER
 @bp.route("/<string:user_id>", methods=["DELETE"])
