@@ -11,7 +11,7 @@ class PostSchema(Schema):
     title = fields.Str(required=True, validate=validate.Length(min=1))
     description = fields.Str()
     link = fields.Str()
-    event8ID = fields.Str(allow_none=True)
+    event_id = fields.Str(allow_none=True)
     created_at = fields.DateTime(dump_only=True)
     deleted_at = fields.DateTime(allow_none=True)
     

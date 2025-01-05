@@ -431,6 +431,8 @@ paths:
           in: "path"
           required: true
           type: "string"
+      security:
+        - BearerAuth: []
       responses:
         200:
           description: "Responses found"
@@ -453,6 +455,8 @@ paths:
             properties:
               choice:
                 type: "string"
+      security:
+        - BearerAuth: []
       responses:
         201:
           description: "Response created successfully"
