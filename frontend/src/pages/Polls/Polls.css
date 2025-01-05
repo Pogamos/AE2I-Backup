@@ -1,94 +1,84 @@
-/* Polls.css */
+/* Conteneur principal */
 .polls-container {
   background-color: #e9e9e9;
-  overflow: hidden; /* Assurez-vous que le contenu respecte les bordures */
+  overflow: hidden;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  width: 100%; /* Ajoutez des marges pour un effet plus centré */
-  border-radius: 15px; /* Bords arrondis en bas */
-  min-height: 100%; /* Pour couvrir toute la hauteur de l'écran */
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
+  width: 100%;
+  border-radius: 15px;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
+/* Contenu des sondages */
 .polls-content {
-  max-height: 80vh; /* Ajustez la hauteur maximale selon vos besoins */
-  overflow-y: auto; /* Permet le défilement vertical */
-  padding: 10px;
-  scrollbar-width: thin; /* Style des barres de défilement pour les navigateurs compatibles */
-  scrollbar-color: #888 #444; /* Couleurs de la barre de défilement */
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Définit 2 colonnes */
-  height: 100vh;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  padding: 10px;
+  overflow-y: auto;
+  height: 80vh;
+  justify-items: stretch;
+  align-items: stretch;
 }
 
+/* En-tête des sondages */
 .polls-header {
   background-color: white;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-
   text-align: center;
+  padding: 20px 0;
 }
 
 .polls-title {
   margin: 0;
   font-size: 30px;
   font-weight: 800;
-  color: #070B23;
-  padding: 40px 0 10px 30px;
+  color: #070b23;
+  padding: 10px 30px;
   text-align: left;
   font-style: italic;
 }
 
-.polls-section-title {
-  color: #ff6f91; /* Rose vif */
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 10px;
-  text-transform: uppercase;
-}
-
+/* Bouton "Voter" */
 .poll-card-vote-button {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  background: #D91663; /* Couleur rose vif */
-  color: #fff;
-  border: none;
-  border-radius: 8px;
+  font-size: 12px;
   padding: 10px 15px;
-  font-size: 1rem;
-  cursor: pointer;
   text-align: center;
+  margin-top: auto;
+  background-color: #d91663;
+  border: none;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
   transition: background 0.3s ease, transform 0.2s ease;
+  width: auto; /* Ajuste la largeur au contenu */
+  position: absolute; /* Positionne le bouton de manière absolue */
+  bottom: 10px; /* Espace en bas */
+  right: 10px; /* Espace à droite */
 }
 
 .poll-card-vote-button:hover {
-  background: #b01453; /* Couleur plus sombre au survol */
-  transform: scale(1.05); /* Léger agrandissement au survol */
+  background: #b01453;
+  transform: scale(1.05);
 }
 
-.poll-card-vote-button:active {
-  transform: scale(0.95); /* Réduction lors du clic */
+.poll-card-vote-button:disabled {
+  background-color: #9c305a;
+  color: #e9e9e9;
+  cursor: not-allowed;
 }
 
-.poll-card-vote-button:hover {
-  background: #e05575; /* Couleur plus sombre au survol */
-  transform: scale(1.05); /* Léger agrandissement au survol */
-}
-
-.poll-card-vote-button:active {
-  transform: scale(0.95); /* Réduction lors du clic */
-}
-
+/* Style des choix */
 .poll-card-choice button {
-  all: unset; /* Réinitialise tous les styles hérités */
+  all: unset;
   width: 100%;
   cursor: pointer;
-  text-align: center;
+  text-align: left;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%; /* Prend la même hauteur que les autres items sur la ligne */
+  height: 100%;
 }
 
 .poll-card-choice:hover {

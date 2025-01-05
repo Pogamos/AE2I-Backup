@@ -1,24 +1,24 @@
 import React, { useState } from "react";
-import "./PollCard.css";
+import "./Card.css";
 
 const PollCard = ({ poll, onVote }) => {
   const [selectedChoice, setSelectedChoice] = useState(null);
 
   const handleVoteClick = () => {
     if (selectedChoice) {
-      onVote(poll._id, selectedChoice); // Passe l'ID et la réponse sélectionnée au parent
+      onVote(poll._id, selectedChoice);
     }
   };
 
   return (
-    <div className="poll-card">
-      <h2 className="poll-card-title">{poll.title}</h2>
-      <p className="poll-card-description">{poll.description}</p>
-      <div className="poll-card-choices">
+    <div className="card">
+      <h2 className="card-title">{poll.title}</h2>
+      <p className="card-description">{poll.description}</p>
+      <div className="card-choices">
         {poll.choices.map((choice, index) => (
           <button
             key={index}
-            className={`poll-card-choice ${
+            className={`card-choice ${
               selectedChoice === choice ? "selected" : ""
             }`}
             onClick={() => setSelectedChoice(choice)}
@@ -28,7 +28,7 @@ const PollCard = ({ poll, onVote }) => {
         ))}
       </div>
       <button
-        className={`poll-card-vote-button ${
+        className={`card-vote-button ${
           selectedChoice ? "active" : "inactive"
         }`}
         onClick={handleVoteClick}

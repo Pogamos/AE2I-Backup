@@ -1,27 +1,26 @@
 import React from "react";
-import "./AnsweredPolls.css";
+import "./Card.css";
 
 const AnsweredPolls = ({ poll }) => {
   return (
-    <div className="answered-poll-card">
-      <h2 className="answered-poll-title">{poll.title}</h2>
-      <p className="answered-poll-description">{poll.description}</p>
-      <div className="answered-poll-choices">
+    <div className="card">
+      <h2 className="card-title">{poll.title}</h2>
+      <p className="card-description">{poll.description}</p>
+      <div className="card-choices">
         {poll.choices.map((choice, index) => (
           <div
             key={index}
-            className={`answered-poll-choice ${
-              choice === poll.selectedChoice ? "selected" : ""
+            className={`card-choice ${
+              choice.choice_text === poll.selectedChoice.choice_text
+                ? "selected"
+                : ""
             }`}
           >
             <span>{choice.choice_text}</span>
-            <span>{Math.floor(Math.random() * 100)}%</span>
           </div>
         ))}
       </div>
-      <p className="answered-poll-footer">
-        Merci pour votre participation !
-      </p>
+      <p className="card-footer">Merci pour votre participation !</p>
     </div>
   );
 };
