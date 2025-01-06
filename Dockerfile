@@ -15,6 +15,9 @@ COPY app/requirements.txt /app/requirements.txt
 # Installer les bibliothèques Python
 RUN pip install --no-cache-dir -r /app/requirements.txt
 
+# Créer le répertoire pour les fichiers uploadés
+RUN mkdir -p /app/uploads && chmod 777 /app/uploads
+
 # Copier le code de l'application
 COPY app /app
 

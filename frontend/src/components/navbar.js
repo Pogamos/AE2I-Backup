@@ -17,16 +17,13 @@ function Navbar({ setStyleMarginLeft }) {
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    // chemin URL
     const currentPath = window.location.pathname;
 
-    // Recupere toutes les balises <a> dans le conteneur de navigation
     const navLinks = document.querySelectorAll(
       ".nav_item_container a, .account_container a"
     );
 
     navLinks.forEach((link) => {
-      // extrait le chemin du lien
       const linkPath = new URL(
         link.getAttribute("href"),
         window.location.origin

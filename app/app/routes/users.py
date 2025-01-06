@@ -1,9 +1,17 @@
-from flask import Blueprint, jsonify, request, current_app
+from flask import Blueprint, jsonify, request, current_app, send_from_directory
 from flask_jwt_extended import jwt_required
 from ..models.users import User
 from ..utils.tools import check_basic_permission
+import os
 
 bp = Blueprint('users', __name__)
+
+# UPLOAD PROFILE PICTURE
+@bp.route('/uploads/<path:filename>', methods=["GET"])
+def serve_profile_picture(filename):
+    """Servir les images depuis le dossier uploads."""
+    uploads_dir = os.path.abspath('./uploads')  # Chemin absolu
+    return send_from_directory(uploads_dir, filename)
 
 # GET ALL USERS
 @bp.route("/", methods=["GET"])

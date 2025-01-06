@@ -39,7 +39,7 @@ const ProfilePage = () => {
   }, [navigate]);
 
   const handleEdit = () => {
-    setEditableProfile({ ...profile }); // Copier les données actuelles dans l'objet modifiable
+    setEditableProfile({ ...profile }); 
     setIsModalOpen(true);
   };
 
@@ -71,9 +71,9 @@ const ProfilePage = () => {
         Object.keys(editableProfile).forEach((key) => {
           formData.append(key, editableProfile[key]);
         });
-        formData.append('ppicture', selectedFile);  // Ajoute le fichier sélectionné
+        formData.append('ppicture', selectedFile);  
       } else {
-        formData = { ...editableProfile };  // Envoie JSON si pas d'image
+        formData = { ...editableProfile }; 
       }
   
       const headers = {
@@ -90,9 +90,9 @@ const ProfilePage = () => {
         { headers }
       );
   
-      setProfile(response.data.user || editableProfile);  // Met à jour les données
+      setProfile(response.data.user || editableProfile);  
       setMessage('Profil mis à jour avec succès !');
-      setIsModalOpen(false);  // Ferme la modale après sauvegarde
+      setIsModalOpen(false); 
     } catch (error) {
       console.error('Erreur lors de la mise à jour du profil :', error);
       setMessage('Une erreur est survenue lors de la mise à jour.');
@@ -111,11 +111,11 @@ const ProfilePage = () => {
       <h1 className="profile-title">Mon profil</h1>
       <div className="profile-card">
         <div className="profile-header">
-          <img
-            src={profile.ppicture || 'https://via.placeholder.com/150'}
-            alt="Profile"
-            className="profile-image"
-          />
+            <img
+              src={profile.ppicture || 'https://via.placeholder.com/150'}
+              alt="Profile"
+              className="profile-image"
+            />
           <div className="profile-info">
             <h2>
               {profile.firstName} {profile.lastName}
@@ -124,7 +124,7 @@ const ProfilePage = () => {
               </button>
             </h2>
             <p>{profile.email}</p>
-            <p>Rôle : {profile.role || 'Utilisateur standard'}</p>
+            <p>Rôle : {profile.role || 'User'}</p>
           </div>
         </div>
         <div className="profile-bio">
@@ -160,17 +160,7 @@ const ProfilePage = () => {
                 required
               />
 
-              <label>Email :</label>
-              <input
-                type="email"
-                name="email"
-                value={editableProfile.email || ''}
-                onChange={handleInputChange}
-                className="modal-input"
-                placeholder="Email"
-                required
-              />
-
+              
               <label>Bio :</label>
               <textarea
                 name="bio"
