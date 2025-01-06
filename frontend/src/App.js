@@ -3,9 +3,13 @@ import "./App.css";
 import Navbar from "./components/navbar.js";
 import "./css/navbar.css";
 import { useState } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import Team from "./views/team";
 import Events from "./views/events";
+import Polls from "./views/Polls.js";
+import LoginPage from "./views/LoginPage.js";
+import ProfilePage from "./views/ProfilePage.js";
+import RegisterPage from "./views/RegisterPage.js";
 
 function App() {
   const [styleMarginLeft, setStyleMarginLeft] = useState({
@@ -41,6 +45,12 @@ function App() {
           />
           <Route path="/team" element={<Team />} />
           <Route path="/events" element={<Events />} />
+          <Route path="/Polls" element={<Polls />} />
+          <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/myaccount" element={<ProfilePage />} />
+          <Route path="/register" element={<RegisterPage />} />
+
         </Routes>
       </div>
     </Router>
