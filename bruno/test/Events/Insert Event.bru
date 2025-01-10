@@ -1,0 +1,21 @@
+meta {
+  name: Insert Event
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:5000/api/events/
+  body: formUrlEncoded
+  auth: none
+}
+
+headers {
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTczNTk4NjQ5MywianRpIjoiYzdmZTg2OTUtMTYyZS00Mzg3LWE4MzQtZjQ4NzZlMGI3N2RlIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjY3NzdlNTI4MTA3MDNjNmY1NDIwYmIwMSIsIm5iZiI6MTczNTk4NjQ5MywiZXhwIjoxNzM1OTg3MzkzLCJyb2xlIjoiYWRtaW4ifQ.N29Ql7n9-24XmFP0ZsoZ478xrhh6asSI_kXyVg_lmFM
+}
+
+body:form-urlencoded {
+  title: titretest
+  description: descriptiontest
+  date: 2025-01-04T10:21:45
+}

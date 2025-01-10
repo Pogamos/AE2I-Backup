@@ -1,0 +1,99 @@
+.card-main {
+  display: flex;
+  flex-direction: row;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  margin-left: 1%;
+  margin-bottom: 2%;
+  width: 38%;
+  background: linear-gradient(130deg, #0c1027, 55%, #75264c);
+  border-radius: 20px;
+  box-shadow: 15px 15px 20px rgba(0, 0, 0, 0.3);
+}
+
+.card-img {
+  width: 35%;
+  margin-left: 2%;
+  margin-right: 10%;
+}
+
+.card-body {
+  color: white;
+}
+
+.card-title {
+  margin-bottom: 0%;
+}
+
+.card-time {
+  margin-top: 0%;
+  font-size: 0.9em;
+}
+
+.card-text {
+  width: 79%;
+  font-size: 0.9em;
+}
+
+.card-secondary {
+  display: flex;
+  flex-direction: row;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  margin-left: 1%;
+  margin-bottom: 2%;
+  width: 38%;
+  background: linear-gradient(130deg, #070b23, 55%, #3b3f54);
+  border-radius: 20px;
+  box-shadow: 15px 15px 20px rgba(0, 0, 0, 0.3);
+}
+
+.card-secondary-img {
+  width: 13%;
+  margin-left: 2%;
+  margin-right: 3%;
+  color: #f1f1f1;
+}
+
+.card-expired {
+  display: flex;
+  flex-direction: row;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  margin-left: 1%;
+  margin-bottom: 2%;
+  width: 38%;
+  background: linear-gradient(130deg, #3e3e3e, 55%, #959595);
+  border-radius: 20px;
+  box-shadow: 15px 15px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Styles pour les petits écrans */
+@media (max-width: 768px) {
+  .card-main {
+    width: 100%;
+  }
+
+  .card-secondary {
+    width: 100%;
+  }
+
+  .card-expired {
+    width: 100%;
+  }
+}
+
+/* Styles pour les très petits écrans */
+@media (max-width: 480px) {
+  .card-main {
+    width: 140%;
+  }
+
+  .card-secondary {
+    width: 140%;
+  }
+
+  .card-expired {
+    width: 140%;
+  }
+}

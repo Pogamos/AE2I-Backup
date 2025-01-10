@@ -1,0 +1,193 @@
+.cards_container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.trois_cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    width: 100%;
+}
+
+.membre_staff {
+    background-image: linear-gradient(to bottom, #070B23, #9C305A);
+    border-radius: 16px;
+    padding: 24px;
+    color: white;
+    transition: transform 0.2s ease;
+    height: auto; 
+    min-height: 180px; 
+}
+
+.membre_staff:hover {
+    transform: translateY(-5px);
+}
+
+.card_content {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    min-height: 100px;
+}
+
+.image_membre_staff {
+    flex-shrink: 0;
+    width: 100px;
+    height: 100px;
+}
+
+.image_membre_staff img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+}
+
+.image_membre_staff.empty {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+}
+
+.contact_membre_staff {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-grow: 1; 
+}
+
+.contact_membre_staff h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+    color: white;
+}
+
+.contact_membre_staff .role {
+    font-size: 0.9rem;
+    color: #B4B4B4;
+    margin: 0;
+    font-weight: 500;
+}
+
+.info_section {
+    margin-top: 4px;
+}
+
+.info_label {
+    font-size: 0.85rem;
+    color: #B4B4B4;
+    margin: 0 0 4px 0;
+}
+
+.email {
+    color: #B4B4B4;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
+    word-break: break-all; 
+}
+
+.email:hover {
+    color: white;
+}
+
+.description {
+    font-size: 0.9rem;
+    color: #B4B4B4;
+    margin: 4px 0 0 0;
+    line-height: 1.4;
+}
+
+@media (max-width: 1024px) {
+    .trois_cards {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px; 
+    }
+}
+
+@media (max-width: 640px) {
+    .trois_cards {
+        grid-template-columns: 1fr;
+        gap: 16px; 
+    }
+    
+    .membre_staff {
+        padding: 16px; 
+    }
+    
+    .card_content {
+        gap: 16px; 
+    }
+}
+
+.trois_cards + .trois_cards {
+    margin-top: 24px;
+}
+
+.presentation_asso {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+.asso_explicatif {
+    background-image: linear-gradient(to bottom, #070B23, #2C2F42);
+    color: white;
+    width: 60%;
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    border-radius: 15px;
+}
+
+.contact {
+    background-image: linear-gradient(to bottom, #070B23, #2C2F42);
+    color: white;
+    width: 40%;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.recherche_staff {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    gap: 20px;
+}
+
+.barre_recherche_staff {
+    display: flex;
+    gap: 15px;
+    padding: 15px;
+    background-color: #1A0B2E;
+    border-radius: 12px;
+}
+
+.barre_recherche_staff input,
+.barre_recherche_staff select {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: #2A1B3D;
+    color: white;
+    min-width: 200px;
+}
+
+.barre_recherche_staff input::placeholder {
+    color: #B4B4B4;
+}
+
+.banner-top h1 {
+    text-align: left;
+  }
+  
+  .titre_page_ae2i {
+    text-align: left;
+    color: #D91663;
+  }

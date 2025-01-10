@@ -5,17 +5,17 @@ meta {
 }
 
 post {
-  url: http://localhost:5000/api/users
+  url: http://localhost:5000/api/auth/register
   body: json
   auth: none
 }
 
 body:json {
   {
-      "lastName": "Doe",
+      "email": "john.admin@example.com",
       "firstName": "John",
+      "lastName": "Doe",
       "password": "Motdepasse123?",
-      "mail": "john.doe@example.com"
+      "role": "admin"
   }
-  
 }
