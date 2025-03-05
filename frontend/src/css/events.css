@@ -167,8 +167,7 @@
   border: solid;
   border-color: white;
   color: white;
-  height: 5%;
-  width: 92%;
+  width: 88%;
   border-radius: 10px;
   border-width: 2px;
 }
@@ -194,6 +193,14 @@
   height: 100%;
 }
 
+.block-heure {
+  margin-left: 10%;
+}
+
+.block-prix {
+  margin-left: 10%;
+}
+
 .spe-event {
   display: flex;
   height: 100%;
@@ -211,13 +218,13 @@
 
 .block-image {
   position: fixed;
-  top: 74%;
+  top: 70%;
   left: 71%;
 }
 
 .enregistrer-event {
   position: fixed;
-  margin-top: -35%;
+  margin-top: -30%;
   margin-left: 5%;
   width: 25%;
   height: 6%;
@@ -227,9 +234,53 @@
   cursor: pointer;
 }
 
+.modifier-event {
+  position: fixed;
+  margin-top: -34%;
+  margin-left: 5%;
+  width: 25%;
+  height: 6%;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(130deg, #d01661, 55%, #740c35);
+  cursor: pointer;
+}
+
+.modifier-event h3 {
+  margin-left: 0%;
+  padding-top: 3%;
+}
+
+.del-event {
+  position: fixed;
+  margin-top: -30%;
+  margin-left: 5%;
+  width: 25%;
+  height: 6%;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(130deg, #d01661, 55%, #740c35);
+  cursor: pointer;
+}
+
+.del-event h3 {
+  margin-left: 0%;
+  padding-top: 3%;
+}
+
 .enregistrer-event h3 {
   margin-left: 0%;
   padding-top: 3%;
+}
+
+.agrandir-event {
+  position: fixed;
+  top: 16.39%;
+  left: 6.5%;
+  width: 92.2%;
+  height: 81.2%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
 }
 
 /* Styles pour les petits écrans */
@@ -255,12 +306,12 @@
     align-items: center;
   }
 
-  .insta-button-precedent{
+  .insta-button-precedent {
     margin-right: -2%;
     padding: 61% 4% 62%;
   }
 
-  .insta-button-suivant{
+  .insta-button-suivant {
     margin-left: 57%;
     padding: 61% 4% 62%;
   }
@@ -345,12 +396,12 @@
     align-items: center;
   }
 
-  .insta-button-precedent{
+  .insta-button-precedent {
     margin-right: -2%;
     padding: 41% 4% 42%;
   }
 
-  .insta-button-suivant{
+  .insta-button-suivant {
     margin-left: 57%;
     padding: 41% 4% 42%;
   }

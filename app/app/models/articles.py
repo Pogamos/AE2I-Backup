@@ -1,4 +1,4 @@
-from marshmallow import Schema, fields, validate, validates, ValidationError
+from marshmallow import Schema, fields, validate
 from bson import ObjectId
 from app.extensions import mongo
 from .base import BaseModel
@@ -10,18 +10,24 @@ class ArticleSchema(Schema):
     title = fields.Str(required=True, validate=validate.Length(min=1, max=255))
     description = fields.Str() 
     price = fields.Float(required=True)
-    photo = fields.Str()  
+    photo = fields.List(fields.Str(), validate=validate.Length(min=1))
+    colors = fields.List(fields.Str(), validate=validate.Length(min=1))
+    colors_code = fields.List(fields.Str(), validate=validate.Length(min=1))
+    tags = fields.List(fields.Str(), validate=validate.Length(min=1)) 
     created_at = fields.DateTime(dump_only=True)
     
     
 class Article(BaseModel):
     collection = mongo.db.articles
 
-    def __init__(self, title, price, description=None, photo=None, **kwargs):
+    def __init__(self, title, price, description=None, photo=None, colors=None, colors_code=None, tags=None, **kwargs):
         self.title = title
         self.description = description
         self.price = price
-        self.photo = photo
+        self.photo = photo if photo is not None else []
+        self.colors = colors
+        self.colors_code = colors_code
+        self.tags = tags
         self.created_at = kwargs.get("created_at", datetime.utcnow())
 
     def save(self):

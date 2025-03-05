@@ -1,44 +1,40 @@
 import React from "react";
-import "../css/Card.css";
+import "../css/Polls.css";
 
 const AnsweredPolls = ({ poll }) => {
-  const totalResponses = poll.totalResponses || 0; // Nombre total de réponses pour le sondage
+  if (!poll || !Array.isArray(poll.choices) || !Array.isArray(poll.responses)) {
+    console.error("Erreur : Données du sondage invalides", poll);
+    return <p>⚠️ Erreur : Données du sondage indisponibles.</p>;
+  }
+
+  const totalResponses = poll.responses.length;
+
+  // Préparer un mapping des votes par choix
+  const votesByChoice = poll.choices.reduce((acc, choice) => {
+    const choiceVotes = poll.responses.filter((r) => r.choice === choice.choice_text).length;
+    acc[choice.choice_text] = choiceVotes;
+    return acc;
+  }, {});
 
   return (
-    <div className="card">
-      <h2 className="card-title">{poll.title}</h2>
-      <p className="card-description">{poll.description}</p>
-      <div className="card-choices">
-        {poll.choices.map((choice, index) => {
-          // Nombre de réponses pour ce choix
-          const choiceResponses = poll.responses.filter(
-            (response) => response.choice_text === choice.choice_text
-          ).length;
+    <div className="polls-card">
+      <h2 className="polls-card-title">{poll.title}</h2>
+      {poll.description && <p className="polls-card-description">{poll.description}</p>}
 
-          // Pourcentage des réponses pour ce choix
-          const choicePercentage =
-            totalResponses > 0
-              ? ((choiceResponses / totalResponses) * 100).toFixed(2)
-              : 0;
+      <div className="polls-card-choices">
+        {poll.choices.map((choice, index) => {
+          const choiceVotes = votesByChoice[choice.choice_text] || 0;
+          const percentage = totalResponses > 0 ? ((choiceVotes / totalResponses) * 100).toFixed(1) : "0.0";
 
           return (
-            <div
-              key={index}
-              className={`card-choice ${
-                choice.choice_text === poll.selectedChoice ? "selected" : ""
-              }`}
-            >
-              <span>
-                {choice.choice_text} - {choiceResponses} réponse(s) (
-                {choicePercentage}%)
-              </span>
+            <div key={index} className="polls-card-choice">
+              {choice.choice_text} - {percentage}% ({choiceVotes} votes)
             </div>
           );
         })}
       </div>
-      <p className="card-footer">
-        Total des réponses : {totalResponses}
-      </p>
+
+      <p className="polls-card-footer">Total des votes : {totalResponses}</p>
     </div>
   );
 };

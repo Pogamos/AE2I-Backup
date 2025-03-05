@@ -438,15 +438,26 @@
 
 from app import create_app, create_logger
 from flask import request, current_app
-from flask import Flask
 from flask_cors import CORS
+from app.factories import create_fake_users, create_fake_staff, create_static_user, clear_db
+import os
 
-app = Flask(__name__)
-CORS(app)
-
+# Créer l'application via la factory
 app = create_app()
 
+# Configurer CORS sur l'application créée.
+# Par exemple, pour autoriser uniquement les requêtes provenant de http://localhost:3000 sur les routes commençant par /api/
+CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
+
+@app.before_request
+def handle_options_requests():
+    if request.method == 'OPTIONS':
+        return '', 200
+    
+    
+# Configurer le logger
 logger = create_logger()
+
 app.logger = logger
 
 # Middleware pour logger les requêtes
@@ -457,7 +468,19 @@ def log_request_info():
     url = request.url
     current_app.logger.info(f'{request_ip} - - "{method} {url}"')
 
+# Optionnel : Seed de la base de données si nécessaire
+if os.environ.get("SEED_DB_AT_STARTUP", "true").lower() == "true":  # ENVIRONEMENT DEV
+    print("🏴‍☠️ Deleting all users from the database...")
+    clear_db()
+    print("✅ Database cleared successfully!")
+    
+    print("📌 Seeding database...")
+    create_fake_users(10)
+    create_fake_staff(5)
+    create_static_user()
+    print("✅ Database seeded successfully!")
+
 if __name__ == '__main__':
     with app.app_context():
         current_app.logger.info("Starting the Flask application :P")
-    app.run(host="0.0.0.0", port=5000,debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=True)

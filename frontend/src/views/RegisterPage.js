@@ -1,8 +1,5 @@
-// src/components/RegisterPage.js
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import '../css/RegisterPage.css';
 
 const RegisterPage = () => {
@@ -15,29 +12,49 @@ const RegisterPage = () => {
   const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
 
+  const validatePassword = (password) => {
+    if (password.length < 8) return "Le mot de passe doit contenir au moins 8 caractères.";
+    if (!/\d/.test(password)) return "Le mot de passe doit contenir au moins un chiffre.";
+    if (!/[a-zA-Z]/.test(password)) return "Le mot de passe doit contenir au moins une lettre.";
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) return "Le mot de passe doit contenir au moins un caractère spécial.";
+    return null;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage('');
     setSuccessMessage('');
-
     if (password !== confirmPassword) {
       setErrorMessage('Les mots de passe ne correspondent pas.');
       return;
     }
 
+    const passwordError = validatePassword(password);
+    if (passwordError) {
+      setErrorMessage(passwordError);
+      return;
+    }
+
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/register', {
-        firstName,
-        lastName,
-        email,
-        password,
+      const res = await fetch('http://localhost:5000/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ firstName, lastName, email, password })
       });
 
+      const data = await res.json();
+
+      if (!res.ok) {
+        setErrorMessage(data.error || 'Échec de l\'inscription. Veuillez réessayer.');
+        return;
+      }
+
       setSuccessMessage('Inscription réussie ! Vous pouvez maintenant vous connecter.');
-      setTimeout(() => navigate('/login'), 2000); // Redirect to login after 2 seconds
+      setTimeout(() => navigate('/login'), 2000);
+
     } catch (error) {
       console.error('Erreur lors de l\'inscription :', error);
-      setErrorMessage('Échec de l\'inscription. Veuillez réessayer.');
+      setErrorMessage('Impossible de se connecter au serveur. Réessayez plus tard.');
     }
   };
 
@@ -56,7 +73,6 @@ const RegisterPage = () => {
             required
           />
         </div>
-
         <div className="form-group">
           <label htmlFor="lastName">Nom</label>
           <input
@@ -68,7 +84,6 @@ const RegisterPage = () => {
             required
           />
         </div>
-
         <div className="form-group">
           <label htmlFor="email">Email</label>
           <input
@@ -80,7 +95,6 @@ const RegisterPage = () => {
             required
           />
         </div>
-
         <div className="form-group">
           <label htmlFor="password">Mot de passe</label>
           <input
@@ -92,7 +106,6 @@ const RegisterPage = () => {
             required
           />
         </div>
-
         <div className="form-group">
           <label htmlFor="confirmPassword">Confirmer le mot de passe</label>
           <input
@@ -104,15 +117,12 @@ const RegisterPage = () => {
             required
           />
         </div>
-
         {errorMessage && <p className="error-message">{errorMessage}</p>}
         {successMessage && <p className="success-message">{successMessage}</p>}
-
         <button type="submit" className="register-button">
           S'inscrire
         </button>
       </form>
-
       <p className="login-link">
         Déjà un compte ? <a href="/login">Connectez-vous</a>
       </p>

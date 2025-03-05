@@ -3,6 +3,7 @@ from bson import ObjectId
 from app.extensions import mongo
 from .base import BaseModel
 from .cart_item import CartItemSchema
+from .staff import StaffSchema
 
 class UserSchema(Schema):
     """Schéma de validation pour les utilisateurs."""
@@ -10,10 +11,10 @@ class UserSchema(Schema):
     lastName = fields.Str(required=True, validate=validate.Length(min=1))
     firstName = fields.Str(required=True, validate=validate.Length(min=1))
     email = fields.Email(required=True, validate=validate.Email())
-    ppicture = fields.Str(allow_none=True)
     role = fields.Str(default="user")
     isAdherant = fields.Boolean(default=False)
     cart = fields.List(fields.Nested(CartItemSchema), required=False)
+    staff = fields.List(fields.Nested(StaffSchema), required=False)
 
     password = fields.Str(
         required=True,
@@ -39,10 +40,10 @@ class User(BaseModel):
         self.firstName = firstName
         self.email = email
         self.password = password
-        self.ppicture = kwargs.get("ppicture")
         self.role = kwargs.get("role", 'user')
         self.isAdherant = kwargs.get("isAdherant", False)
         self.cart = kwargs.get("cart", [])
+        self.staff = kwargs.get("staff", [])
 
     def save(self):
         """Enregistre un utilisateur dans MongoDB."""
@@ -119,4 +120,11 @@ class User(BaseModel):
             {"$set": {"cart": []}}
         )
         return result.modified_count > 0
-    
+
+    @classmethod
+    def get_staff_users(cls):
+        """Récupère les utilisateurs du staff."""
+        users = cls.collection.find({"staff": {"$ne": []}})
+        return [cls.to_json(user) for user in users]
+
+

@@ -1,6 +1,5 @@
 from flask_jwt_extended import get_jwt_identity
 from ..models.users import User
-from flask import current_app
 
 
 def check_basic_permission(user_id):

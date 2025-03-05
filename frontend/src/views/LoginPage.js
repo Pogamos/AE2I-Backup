@@ -1,8 +1,5 @@
-// src/components/LoginPage.js
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import '../css/LoginPage.css';
 
 const LoginPage = () => {
@@ -11,25 +8,53 @@ const LoginPage = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
+  const translateError = (error) => {
+    if (error.includes("Invalid email or password")) {
+      return "Adresse e-mail ou mot de passe incorrect.";
+    }
+    if (error.includes("User not found")) {
+      return "Utilisateur introuvable. Vérifiez votre e-mail.";
+    }
+    if (error.includes("Invalid password")) {
+      return "Mot de passe incorrect.";
+    }
+    return "Échec de la connexion. Vérifiez vos identifiants.";
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMessage(''); 
+    setErrorMessage('');
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', {
-        email,
-        password,
+      const res = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
       });
-      console.log('Données de connexion reçues :', response.data);
-      localStorage.setItem('token', response.data.access_token);
-      console.log("Données de connexion :", response.data);
-      
 
+      const data = await res.json();
+
+      if (!res.ok) {
+        setErrorMessage(translateError(data.error || ""));
+        return;
+      }
+
+      console.log('Données de connexion reçues :', data);
+      localStorage.setItem('token', data.access_token);
       localStorage.setItem('email', email);
-      navigate('/myaccount'); 
+      
+      if (data.user && data.user.role) {
+        localStorage.setItem('userRole', data.user.role.toLowerCase());
+      } else {
+        localStorage.setItem('userRole', '');
+      }
+      navigate('/myaccount');
+      window.location.reload();
+
+
     } catch (error) {
       console.error('Erreur lors de la connexion :', error);
-      setErrorMessage('Échec de la connexion. Vérifiez vos identifiants.');
+      setErrorMessage('Impossible de se connecter au serveur. Vérifiez votre connexion.');
     }
   };
 
@@ -48,7 +73,6 @@ const LoginPage = () => {
             required
           />
         </div>
-
         <div className="form-group">
           <label htmlFor="password">Mot de passe</label>
           <input
@@ -60,14 +84,11 @@ const LoginPage = () => {
             required
           />
         </div>
-
         {errorMessage && <p className="error-message">{errorMessage}</p>}
-
         <button type="submit" className="login-button">
           Se connecter
         </button>
       </form>
-
       <p className="register-link">
         Pas encore de compte ? <a href="/register">Inscrivez-vous</a>
       </p>

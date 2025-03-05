@@ -45,15 +45,12 @@
   padding: 20px;
   padding-left: 0px;
   margin-left: 100px;
-  /* overflow-y: auto; */
 }
 /* classique shit */
 .content {
-  background-color: #ffffff;
+  background-color: #d9d9d9;
   border-radius: 10px;
-  padding: 15px;
   flex: 1;
-  overflow-y: auto;
 }
 
 /* ---------SCROLLBAR------------------------------------------------ */
@@ -74,7 +71,7 @@
 
 /* ::-webkit-scrollbar {
   display: none;
-} 
+}
 */
 
 .scrollable:hover::-webkit-scrollbar {

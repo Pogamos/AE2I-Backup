@@ -68,6 +68,43 @@
   box-shadow: 15px 15px 20px rgba(0, 0, 0, 0.3);
 }
 
+.card-big {
+  display: flex;
+  flex-direction: row;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  margin-left: 1%;
+  margin-bottom: 2%;
+  width: 38%;
+  background: linear-gradient(130deg, #0c1027, 55%, #75264c);
+  border-radius: 20px;
+  box-shadow: 15px 15px 20px rgba(0, 0, 0, 0.3);
+}
+
+.card-img-big {
+  width: 35%;
+  margin-left: 2%;
+  margin-right: 10%;
+}
+
+.card-body-big {
+  color: white;
+}
+
+.card-title-big {
+  margin-bottom: 0%;
+}
+
+.card-time-big {
+  margin-top: 0%;
+  font-size: 0.9em;
+}
+
+.card-text-big {
+  width: 79%;
+  font-size: 0.9em;
+}
+
 /* Styles pour les petits écrans */
 @media (max-width: 768px) {
   .card-main {

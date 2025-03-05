@@ -1,9 +1,8 @@
-from marshmallow import Schema, fields, validate, validates, ValidationError
+from marshmallow import Schema, fields, validate
 from bson import ObjectId
 from datetime import datetime
 from app.extensions import mongo
 from .base import BaseModel
-from .events import EventSchema
 
 class PostSchema(Schema):
     """Schéma de validation pour les Post."""    

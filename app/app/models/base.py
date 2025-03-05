@@ -18,6 +18,6 @@ class BaseModel:
     def obj_to_json(self):
         """Transforme l'objet en JSON."""
         data = self.__dict__.copy()
-        data['_id'] = str(data['_id'])
+        if '_id' in data:
+            data['_id'] = str(data['_id'])
         return data
-

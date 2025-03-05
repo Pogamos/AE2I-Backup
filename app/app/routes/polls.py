@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request, current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from ..models.polls import Poll, PollSchema, Response, ResponseSchema
-from ..utils.tools import check_admin_permission, check_basic_permission
+from ..utils.tools import check_admin_permission
 
 bp = Blueprint('polls', __name__)
 poll_schema = PollSchema()
@@ -90,8 +90,33 @@ def delete_poll(poll_id):
 @jwt_required()
 def get_responses_by_poll_id(poll_id):
     try:
+        poll = Poll.find_by_id(poll_id)
+        if not poll:
+            current_app.logger.error(f"Poll not found: {poll_id}")
+            return jsonify({"success": False, "message": "Poll not found"}), 404
+
         responses = Response.find_by_poll_id(poll_id)
-        return jsonify({"success": True, "responses": responses}), 200
+        total_responses = len(responses)
+
+        # Calculer le nombre de votes pour chaque choix
+        votes_by_choice = {choice['choice_text']: 0 for choice in poll.choices}
+        for response in responses:
+            if response['choice'] in votes_by_choice:
+                votes_by_choice[response['choice']] += 1
+
+        # Calculer le pourcentage de votes pour chaque choix
+        percentages_by_choice = {
+            choice: (count / total_responses * 100) if total_responses > 0 else 0
+            for choice, count in votes_by_choice.items()
+        }
+
+        return jsonify({
+            "success": True,
+            "responses": responses,
+            "total_responses": total_responses,
+            "votes_by_choice": votes_by_choice,
+            "percentages_by_choice": percentages_by_choice
+        }), 200
     except Exception as e:
         current_app.logger.error(f"An error occurred while fetching responses: {str(e)}")
         return jsonify({"success": False, "message": str(e)}), 500

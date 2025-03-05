@@ -7,6 +7,7 @@ bp = Blueprint('users', __name__)
     
 # GET ALL USERS
 @bp.route("/", methods=["GET"])
+@jwt_required()
 def get_users():
     try:
         users = User.get_all()
@@ -127,6 +128,18 @@ def flush_cart(user_id):
             return jsonify({"success": True, "message": "Cart flushed"}), 200
         else:
             return jsonify({"success": False, "message": "Failed to flush cart"}), 500
+    except Exception as e:
+        current_app.logger.error(f"An error occurred: {str(e)}")
+        return jsonify({"success": False, "message": str(e)}), 500
+
+# GET STAFF USERS
+@bp.route('/staff', methods=['GET'])
+# @jwt_required()
+def get_staff_users():
+    """Route pour récupérer les utilisateurs du staff."""
+    try:
+        users = User.get_staff_users()
+        return jsonify({"success": True, "users": users}), 200
     except Exception as e:
         current_app.logger.error(f"An error occurred: {str(e)}")
         return jsonify({"success": False, "message": str(e)}), 500

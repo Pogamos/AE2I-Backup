@@ -34,28 +34,29 @@ def create_event():
         title = request.form.get("title")
         description = request.form.get("description")
         date_str = request.form.get("date")
-        if not (title and description and date_str):
+        image_file = request.files.get("image")
+
+        current_app.logger.info(f"Received data: title={title}, description={description}, date={date_str}, image_file={image_file}")
+
+        if not (title and description and date_str and image_file):
             return jsonify({"success": False, "message": "Missing fields"}), 400
-        
+
         try:
             date = datetime.strptime(date_str, '%Y-%m-%dT%H:%M:%S')
         except ValueError:
             return jsonify({"success": False, "message": "Invalid date format"}), 400
 
-        image_file = request.files.get("image")
-        if not image_file:
-            return jsonify({"success": False, "message": "Image is required"}), 400
-
-        filename = title.replace(" ", "_") + "." + request.form.get("image_ext")
+        filename = image_file.filename.replace(" ", "_")
         image_path = os.path.join(UPLOAD_FOLDER, filename)
         image_file.save(image_path)
-        
+
         event_data = {
             "title": title,
             "description": description,
             "date": date,
+            "img": filename,
         }
-        
+
         event = Event(**event_data)
         event.save()
         current_app.logger.info(f"Event created successfully: {event.title}")
@@ -71,10 +72,9 @@ def get_events():
         events = Event.get_all()
         events_with_images = []
         for event in events:
-            truncated_title = event['title'].replace(" ", "_")
             event_data = event_schema.dump(event)
             event_data['id'] = str(event['_id'])
-            event_data['image_url'] = f"/api/events/uploads/{truncated_title}.svg"
+            event_data['image_url'] = f"/api/events/uploads/{event['img']}"
             events_with_images.append(event_data)
         return jsonify({"success": True, "events": events_with_images}), 200
     except Exception as e:
@@ -87,7 +87,10 @@ def get_event_by_id(event_id):
     try:
         event = Event.find_by_id(event_id)
         if event:
-            return jsonify({"success": True, "event": event}), 200
+            event_data = event_schema.dump(event)
+            event_data['id'] = str(event._id)
+            event_data['image_url'] = f"/api/events/uploads/{event.img}"
+            return jsonify({"success": True, "event": event_data}), 200
         else:
             current_app.logger.error(f"Event not found: {event_id}")
             return jsonify({"success": False, "message": "Event not found"}), 404
@@ -129,7 +132,11 @@ def delete_event(event_id):
             current_app.logger.error(f"Event not found: {event_id}")
             return jsonify({"success": False, "message": "Event not found"}), 404
 
+        image_path = os.path.join(UPLOAD_FOLDER, event.img) if event.img else None
+
         if event.delete():
+            if image_path and os.path.exists(image_path):
+                os.remove(image_path)
             current_app.logger.info(f"Event deleted successfully: {event_id}")
             return jsonify({"success": True, "message": "Event deleted successfully"}), 200
         else:

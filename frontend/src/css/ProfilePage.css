@@ -1,10 +1,124 @@
+body {
+  margin: 0;
+  background-color: #121212;
+  font-family: 'Roboto', sans-serif;
+}
+
+.profile-title {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 3rem;
+  color: #ffffff; 
+}
+
+.profile-container {
+  max-width: 100%;
+  padding: 40px 20px;
+  background-color: transparent; 
+}
+
+.profile-card {
+  width: 90%;             
+  margin: 0 auto;
+  padding: 60px;
+  background: linear-gradient(135deg, #020822, #8e0d81);
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.profile-image,
+.profile-image-svg {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid white;
+}
+
+.profile-info {
+  flex: 1;
+  color: white;
+  text-align: left;
+}
+
+.profile-info h2 {
+  margin: 0 0 10px 0;
+  font-size: 1.8rem;
+}
+
+.profile-info p {
+  margin: 5px 0;
+  font-size: 1rem;
+  color: #cfcfcf;
+}
+
+.button-group {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.edit-button,
+.logout-button,
+.password-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.edit-button {
+  background-color: #007bff;
+  color: white;
+}
+
+.edit-button:hover {
+  background-color: #0056b3;
+}
+
+.logout-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.logout-button:hover {
+  background-color: #d32f2f;
+}
+
+.password-button {
+  background-color: #2575fc;
+  color: white;
+}
+
+.password-button:hover {
+  background-color: #1a5ec3;
+}
+
+.profile-bio {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 30px;
+  border-radius: 10px;
+  color: white;
+  margin-top: 20px;
+}
+
+/* Modal Styles */
 .modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.7); 
+  background: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,7 +126,7 @@
 }
 
 .modal-content {
-  background: white;
+  background: #fff;
   padding: 30px;
   border-radius: 15px;
   width: 450px;
@@ -21,14 +135,12 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
-.modal-content {
-  background: white;
-  padding: 30px; 
-  border-radius: 15px;
-  width: 450px;
-  max-width: 90%;
-  text-align: center;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+/* Labels dans les modaux */
+.modal-content label {
+  display: block;
+  color: #000;
+  font-weight: bold;
+  margin-top: 10px;
 }
 
 .modal-input {
@@ -38,13 +150,14 @@
   border-radius: 10px;
   border: 1px solid #ddd;
   font-size: 1rem;
-  box-sizing: border-box; 
+  box-sizing: border-box;
+  background: #fff;
+  color: #000;
 }
-
 
 textarea.modal-input {
   resize: none;
-  height: 120px; 
+  height: 120px;
 }
 
 input[type="file"].modal-input {
@@ -99,67 +212,4 @@ input[type="file"].modal-input {
     opacity: 1;
     transform: scale(1);
   }
-}
-
-body {
-  margin: 0;
-  background-color: #121212;
-  font-family: 'Roboto', sans-serif;
-}
-
-.profile-title {
-  text-align: center;
-  margin-bottom: 40px;
-  font-size: 3rem;
-  color:  rgb(0, 0, 0);
-}
-
-.profile-container {
-  max-width: 100%;
-  padding: 40px 20px;
-  background-color: #f3f3f3;
-}
-
-.profile-card {
-  width: 80%;
-  margin: 0 auto;
-  padding: 60px;
-  background: linear-gradient(135deg, #020822, #8e0d81);
-  border-radius: 15px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-}
-
-.profile-header {
-  display: flex;
-  align-items: center;
-  gap: 30px;  
-}
-
-.profile-image {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 3px solid white;
-}
-
-.profile-info h2 {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: white;
-  font-size: 1.8rem;
-}
-
-.profile-info p {
-  color: #cfcfcf;
-  font-size: 1rem;
-}
-
-.profile-bio {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 30px;
-  border-radius: 10px;
-  color: white;
-  margin-top: 20px;
 }

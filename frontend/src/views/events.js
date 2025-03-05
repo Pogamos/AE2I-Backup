@@ -9,6 +9,8 @@ function Events() {
   const [ajoutEvent, setAjoutEvent] = useState("none");
   const [slides, setSlides] = useState([]);
   const [events, setEvents] = useState([]);
+  const [event, setEvent] = useState({});
+  const [agrandir, setAgrandir] = useState("none");
   const [polls, setPolls] = useState([]);
   const [token, setToken] = useState("");
   const [role, setRole] = useState("user");
@@ -19,43 +21,12 @@ function Events() {
 
   const navigate = useNavigate();
 
-  //temporaire devonly car pas de sécurité sur le site
   const login = () => {
-
-    const email = "john.admin@example.com"
-    const password = "Motdepasse123?"
-
-    const info = {
-      email: email,
-      password: password,
-    }
-
-    fetch("http://localhost:5000/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(info),
-    })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      console.log(data);
-      setToken(data.access_token)
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+    setToken(localStorage.getItem("token"));
   };
 
-  //temp
   const recupRole = () => {
-    
-    const email = "john.admin@example.com"
+    const email = localStorage.getItem("email");
 
     fetch(`http://localhost:5000/api/users/${email}`, {
       method: "GET",
@@ -63,18 +34,18 @@ function Events() {
         "Content-Type": "application/json",
       },
     })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      setRole(data.user.role)
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-    });
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setRole(data.user.role);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   const recupEvent = () => {
@@ -91,7 +62,6 @@ function Events() {
         return response.json();
       })
       .then((data) => {
-
         const validEvents = data.events.map((element) => ({
           ...element,
           image_url: `http://localhost:5000${element.image_url}`,
@@ -114,23 +84,23 @@ function Events() {
     const heure = document.getElementById("heure").value;
     const image = document.getElementById("image").files[0];
 
+    if (!title || !description || !date || !heure || !image) {
+      console.error("Missing fields");
+      return;
+    }
+
     const dateTime = `${date}T${heure}:00`;
 
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
     formData.append("date", dateTime);
-
-    if (image) {
-      formData.append("image", image);
-      formData.append("image_ext", image.name.split(".").pop());
-    }
+    formData.append("image", image);
 
     fetch("http://localhost:5000/api/events/", {
       method: "POST",
       headers: {
-        Authorization:
-          `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
       body: formData,
     })
@@ -165,7 +135,6 @@ function Events() {
         return response.json();
       })
       .then((data) => {
-
         const validPolls = data.polls.map((element) => element);
 
         setPolls((prevPolls) => {
@@ -223,8 +192,7 @@ function Events() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization:
-          `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(post),
     })
@@ -255,7 +223,11 @@ function Events() {
 
   const pollEvent = () => {
     return polls.map((element, index) => (
-      <div key={index} className="card-secondary" onClick={() => navigate('/polls')}>
+      <div
+        key={index}
+        className="card-secondary"
+        onClick={() => navigate("/polls")}
+      >
         <img src="../svg/poll.svg" className="card-secondary-img" alt="..." />
         <div className="card-body">
           <p className="card-secondary-text">
@@ -269,22 +241,108 @@ function Events() {
   const cardEvent = () => {
     const formatDate = (dateString) => {
       const date = new Date(dateString);
-      const options = { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' };
-      return date.toLocaleDateString('fr-FR', options).replace(',', ' |');
+      const options = {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        hour: "2-digit",
+        minute: "2-digit",
+      };
+      return date.toLocaleDateString("fr-FR", options).replace(",", " |");
     };
-  
+
     return events.map((element, index) => (
-      <div key={index} className="card-main">
-        {element.image_url && <img src={element.image_url} className="card-img" alt={element.title} />}
+      <div
+        key={index}
+        className="card-main"
+        onClick={role === "admin" || role === "superadmin" ? () => agrandirEvent(element.id) : null}
+      >
+        {element.image_url && (
+          <img
+            src={element.image_url}
+            className="card-img"
+            alt={element.title}
+          />
+        )}
         <div className="card-body">
           <h3 className="card-title">{element.title}</h3>
-          <p className="card-time">
-            {formatDate(element.date)}
-          </p>
+          <p className="card-time">{formatDate(element.date)}</p>
           <p className="card-text">{element.description}</p>
         </div>
       </div>
     ));
+  };
+
+  const agrandirEvent = (id) => {
+    fetch(`http://localhost:5000/api/events/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify(),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setEvent(data.event);
+        setAgrandir("block");
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
+  const modifierEvent = () => {
+    fetch(`http://localhost:5000/api/events/${event.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(event),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Success:", data);
+      })
+      .then(() => {
+        handleReload();
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
+  const supprimerEvent = () => {
+    fetch(`http://localhost:5000/api/events/${event.id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+      })
+      .then(() => {
+        handleReload();
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   const posts = () => {
@@ -343,6 +401,21 @@ function Events() {
     recupRole();
   }, []);
 
+  const formatDateForInput = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
+  const formatTimeForInput = (dateString) => {
+    const date = new Date(dateString);
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    return `${hours}:${minutes}`;
+  };
+
   return (
     <div className="events">
       <div className="banner-top">
@@ -358,7 +431,7 @@ function Events() {
         </button>
         <button
           className="ajouter-post"
-          style={{ display: role === "admin" ? "block" : "none" }}
+          style={{ display: role === "admin" || role === "superadmin" ? "block" : "none" }}
           onClick={() => setAjoutPost("block")}
         >
           <h3>Ajouter un post</h3>
@@ -367,7 +440,7 @@ function Events() {
       <div className="actu">
         <button
           className="ajouter-event"
-          style={{ display: role === "admin" ? "block" : "none" }}
+          style={{ display: role === "admin" || role === "superadmin" ? "block" : "none" }}
           onClick={() => setAjoutEvent("block")}
         >
           <h3>Ajouter un événement</h3>
@@ -400,16 +473,6 @@ function Events() {
                 <input type="time" id="heure" name="heure" />
               </div>
             </div>
-            <div className="spe-event">
-              <div className="block-tags">
-                <h4 htmlFor="tags">Tags</h4>
-                <input type="text" id="tags" name="tags" />
-              </div>
-              <div className="block-prix">
-                <h4 htmlFor="prix">Prix</h4>
-                <input type="text" id="prix" name="prix" />
-              </div>
-            </div>
             <div className="block-image">
               <h4 htmlFor="image">Image</h4>
               <input
@@ -436,6 +499,74 @@ function Events() {
             <input type="text" id="url" name="url" />
             <button className="ajouter" onClick={envoiPost}>
               <h3>Enregistrer le post</h3>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className="ajout-shadow" style={{ display: agrandir }}>
+        <div className="ajout-event">
+          <button className="fermer" onClick={() => setAgrandir("none")}>
+            Fermer
+          </button>
+          <h3>Modifier un événement</h3>
+          <div className="inevent">
+            <h4 htmlFor="event-title">Titre</h4>
+            <input
+              type="text"
+              id="event-title"
+              name="event-title"
+              value={event.title}
+              onChange={(e) => setEvent({ ...event, title: e.target.value })}
+            />
+            <h4 htmlFor="description-event">description</h4>
+            <input
+              type="text"
+              id="description-event"
+              name="description-event"
+              value={event.description}
+              onChange={(e) =>
+                setEvent({ ...event, description: e.target.value })
+              }
+            />
+            <div className="date-event">
+              <div className="block-date">
+                <h4 htmlFor="date">Date</h4>
+                <input
+                  type="date"
+                  id="date"
+                  name="date"
+                  value={event.date ? formatDateForInput(event.date) : ""}
+                  onChange={(e) => {
+                    const newDate = e.target.value;
+                    const timePart = event.date
+                      ? event.date.split("T")[1]
+                      : "00:00:00";
+                    setEvent({ ...event, date: `${newDate}T${timePart}` });
+                  }}
+                />
+              </div>
+              <div className="block-heure">
+                <h4 htmlFor="heure">Heure</h4>
+                <input
+                  type="time"
+                  id="heure"
+                  name="heure"
+                  value={event.date ? formatTimeForInput(event.date) : ""}
+                  onChange={(e) => {
+                    const newTime = e.target.value;
+                    const datePart = event.date
+                      ? event.date.split("T")[0]
+                      : "1970-01-01";
+                    setEvent({ ...event, date: `${datePart}T${newTime}:00` });
+                  }}
+                />
+              </div>
+            </div>
+            <button className="modifier-event" onClick={modifierEvent}>
+              <h3>Modifier l'événement</h3>
+            </button>
+            <button className="del-event" onClick={supprimerEvent}>
+              <h3>Supprimer l'événement</h3>
             </button>
           </div>
         </div>

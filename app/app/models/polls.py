@@ -1,4 +1,4 @@
-from marshmallow import Schema, fields, validate, validates, ValidationError
+from marshmallow import Schema, fields, validate
 from bson import ObjectId
 from app.extensions import mongo
 from .base import BaseModel

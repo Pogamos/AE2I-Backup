@@ -3,18 +3,11 @@ stages:
   - test
 
 variables:
-  APACHE_DOCUMENT_ROOT: /var/www/html
-  MYSQL_DATABASE: "ae2i_db"
-  MYSQL_ROOT_PASSWORD: "admin"
-  MYSQL_HOST: "mysql"
-  MYSQL_ALLOW_EMPTY_PASSWORD: "no"
+  FLASK_APP: app.py
+  REACT_APP_NAME: frontend
+  DOCKER_IMAGE: etulab.univ-amu.fr:5005/sae-s5.a.01-2024/sae-s5.a.01-2024-sujet03:s5a01-ae2i
 
-# Job pour construire l'image Docker de l'application
 Build_Image:
-  retry:
-    max: 2
-    when:
-      - script_failure
   stage: build
   image: docker:edge-git
   services:
@@ -22,41 +15,37 @@ Build_Image:
   before_script:
     - apk update
     - apk add curl
-    - echo "$CI_ETULAB_PROJECT_REGISTRY_TOKEN" | docker login etulab.univ-amu.fr:5005 -u "$CI_ETULAB_REGISTRY_USER" --password-stdin
+    - echo "$CI_ETULAB_PROJECT_REGISTRY_TOKEN" | docker login etulab.univ-amu.fr:5005/sae-s5.a.01-2024/sae-s5.a.01-2024-sujet03:s5a01-ae2i -u "$CI_ETULAB_REGISTRY_USER" --password-stdin
   script:
-    - docker build -t etulab.univ-amu.fr:5005/p22017379/s5.a.01-ae2i:s5a01-ae2i .
-    - docker push etulab.univ-amu.fr:5005/p22017379/s5.a.01-ae2i:s5a01-ae2i
+    - docker build -t $DOCKER_IMAGE .
+    - docker push $DOCKER_IMAGE
 
-Test_Image:
-  retry:
-    max: 2
-    when: 
-    - script_failure
+Frontend_Test:
   stage: test
+  image: node:14
   needs: ["Build_Image"]
-  image: etulab.univ-amu.fr:5005/p22017379/s5.a.01-ae2i:s5a01-ae2i 
   before_script:
-    - cd laravel-app
-    - rm -f composer.lock
-    - composer install --no-progress --no-interaction
-    - composer require --dev phpstan/phpstan
-    - chmod -R 755 .
+    - cd frontend
+    - npm install
+    - npm install --save-dev @types/react postcss-selector-parser typescript
+    - npm audit fix
   script:
-    - pwd
-    - cd /builds/p22017379/s5.a.01-ae2i/laravel-app
-    - vendor/bin/phpunit tests --log-junit=/builds/p22017379/s5.a.01-ae2i/rapportTests.xml --filter ExampleTest
-    - cd /builds/p22017379/s5.a.01-ae2i
-    - rm -f Sources.zip
-    - zip -r Sources.zip laravel-app
-    - pwd
+    - npm test -- --passWithNoTests
+
+Backend_Test:
+  stage: test
+  image: python:3.9
+  needs: ["Build_Image"]
+  before_script:
+    - cd app
+    - pip install -r requirements.txt
+    - pip install pytest
+  script:
+    - echo ""
 
 Code_Review:
-  retry:
-    max: 2
-    when: 
-    - script_failure
   stage: test
-  image: etulab.univ-amu.fr:5005/p22017379/s5.a.01-ae2i:s5a01-ae2i 
+  image: etulab.univ-amu.fr:5005/sae-s5.a.01-2024/sae-s5.a.01-2024-sujet03:s5a01-ae2i
   script:
-    - composer require --dev phpstan/phpstan
-    #- vendor/bin/phpstan analyse laravel-app/app laravel-app/tests -l max
+    - pip install flake8
+    - flake8 app/ --max-line-length=200

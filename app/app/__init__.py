@@ -1,4 +1,3 @@
-from flask import Flask
 from .extensions import jwt, mongo
 from .config import Config
 from .log_config import setup_logger
@@ -14,9 +13,6 @@ CORS(app)
 #                                                                                                  #
 #                                             TODO                                                 #
 #                 -faire les tests                                                                 #
-#                 -faire la doc                                                                    #
-#                 -Ajouter le JWT aux routes en ayant besoin                                       #
-#                 -Quand soft delete recuperer les données pas supprimées ?                        #
 #                                                                                                  #
 ####################################################################################################
 
@@ -49,18 +45,20 @@ def create_app():
             "docExpansion": "none"
         }
     }
-    swagger = Swagger(app, config=swagger_config, template_file="./docs/swagger.yaml")
+    Swagger(app, config=swagger_config, template_file="./docs/swagger.yaml")
 
     # Enregistrement des blueprints
-    from .routes import users, auth, posts, polls, articles, events, base
+    from .routes import users, auth, posts, polls, articles, events, commands, base
     app.register_blueprint(base.bp, url_prefix='/api')
-    app.register_blueprint(users.bp, url_prefix='/api/users') # TOUT MARCHE                     TODO AJouter gestion Cart
+    app.register_blueprint(users.bp, url_prefix='/api/users') # TOUT MARCHE                   
     app.register_blueprint(auth.bp, url_prefix='/api/auth') # TOUT MARCHE                       
-    app.register_blueprint(posts.bp, url_prefix='/api/posts') # TOUT MARCHE                     TODO Ajouter gestion Events
-    app.register_blueprint(events.bp, url_prefix='/api/events') 
+    app.register_blueprint(posts.bp, url_prefix='/api/posts') # TOUT MARCHE                     
+    app.register_blueprint(events.bp, url_prefix='/api/events') # TOUT MARCHE
     app.register_blueprint(polls.bp, url_prefix='/api/polls') # TOUT MARCHE
     app.register_blueprint(articles.bp, url_prefix='/api/articles') # TOUT MARCHE
+    app.register_blueprint(commands.bp, url_prefix='/api/commands')
 
+    # Si jamais vous avez des questions me contacter à lucas.paugam@gmail.com voila voila :P
     return app
 
 def create_logger():

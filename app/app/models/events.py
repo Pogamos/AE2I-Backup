@@ -8,15 +8,17 @@ class EventSchema(Schema):
     title = fields.Str(required=True, validate=validate.Length(min=1))
     description = fields.Str()
     date = fields.DateTime(required=True)
+    img = fields.Str(required=True)
 
 class Event(BaseModel):
     """Modèle pour les événements dans MongoDB."""
     collection = mongo.db.events
 
-    def __init__(self, title, description=None, date=None, **kwargs):
+    def __init__(self, title, description=None, date=None, img=None, **kwargs):
         self.title = title
         self.description = description
         self.date = date or datetime.utcnow()
+        self.img = img
 
     def save(self):
         """Enregistre un événement dans MongoDB."""
